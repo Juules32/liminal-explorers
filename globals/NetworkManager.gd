@@ -2,7 +2,7 @@ extends Node
 
 const PLAYER: Resource = preload("uid://c4qhceyy2snhx")
 
-const LOBBY_NAME = "test_lobby_name"
+const LOBBY_NAME = "xxxa"
 const LOBBY_MODE: String = "CoOP"
 const MAX_MEMBERS: int = 10
 const STEAM_APP_ID: int = 480 # Test game app id
