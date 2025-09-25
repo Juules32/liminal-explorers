@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://c4qhceyy2snhx"]
+[gd_scene load_steps=6 format=3 uid="uid://c4qhceyy2snhx"]
 
 [ext_resource type="Script" uid="uid://bxfkpkbtlmudh" path="res://player.gd" id="1_onrkg"]
 [ext_resource type="Texture2D" uid="uid://r7ivhxxduvis" path="res://icon.svg" id="2_i3pqv"]
@@ -10,12 +10,14 @@ size = Vector2(128, 128)
 properties/0/path = NodePath(".:position")
 properties/0/spawn = true
 properties/0/replication_mode = 1
-properties/1/path = NodePath(".:axis_x")
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_onrkg"]
+properties/0/path = NodePath(".:axis_x")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:axis_y")
 properties/1/spawn = true
 properties/1/replication_mode = 1
-properties/2/path = NodePath(".:axis_y")
-properties/2/spawn = true
-properties/2/replication_mode = 1
 
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_onrkg")
@@ -32,3 +34,6 @@ replication_config = SubResource("SceneReplicationConfig_sweqy")
 [node name="Label" type="Label" parent="."]
 offset_right = 40.0
 offset_bottom = 23.0
+
+[node name="InputSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_onrkg")
