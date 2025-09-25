@@ -27,5 +27,9 @@ size_flags_horizontal = 4
 [node name="LobbiesContainer" type="VBoxContainer" parent="ScrollContainer"]
 layout_mode = 2
 
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("uid://c4qhceyy2snhx")
+spawn_path = NodePath("..")
+
 [connection signal="pressed" from="VBoxContainer/HostButton" to="." method="_on_host_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/LobbyButton" to="." method="_on_lobby_button_pressed"]
