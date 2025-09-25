@@ -6,14 +6,7 @@ extends CharacterBody2D
 
 @export var player_id: int = -1
 
-func _init() -> void:
-	%InputSynchronizer.tree_entered.connect(_on_input_synchronizer_tree_entered.bind(player_id))
-
 const SPEED: float = 500.0
-
-func _on_input_synchronizer_tree_entered(p_id: int) -> void:
-	print(player_id, " ", multiplayer.get_unique_id())
-	%InputSynchronizer.set_multiplayer_authority(p_id)
 
 func _ready() -> void:
 	if input_synchronizer.get_multiplayer_authority() != multiplayer.get_unique_id():

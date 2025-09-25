@@ -3,6 +3,9 @@ extends MultiplayerSynchronizer
 @export var axis_x: float = 0
 @export var axis_y: float = 0
 
+func _enter_tree() -> void:
+	set_multiplayer_authority(multiplayer.get_unique_id())
+
 func _ready() -> void:
 	if get_multiplayer_authority() != multiplayer.get_unique_id():
 		set_process(false)
