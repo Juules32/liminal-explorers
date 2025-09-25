@@ -7,6 +7,9 @@ var player_id: int = -1
 
 const SPEED: float = 500.0
 
+func _init() -> void:
+	set_multiplayer_authority(Steam.getSteamID())
+
 func _physics_process(delta: float) -> void:
 	if not is_multiplayer_authority():
 		return
