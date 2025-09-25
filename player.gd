@@ -2,11 +2,18 @@ class_name Player
 extends CharacterBody2D
 
 @onready var label: Label = $Label
-@onready var input_synchronizer: InputSynchronizer = $InputSynchronizer
+@onready var input_synchronizer: MultiplayerSynchronizer = $InputSynchronizer
 
 @export var player_id: int = -1
 
 const SPEED: float = 500.0
+
+func connect_enter_tree(pid: int) -> void:
+	%InputSynchronizer.tree_entered.connect(_on_input_enter_tree.bind(pid))
+
+func _on_input_enter_tree(pid: int) -> void:
+	print("tttee")
+	%InputSynchronizer.set_multiplayer_authority(pid)
 
 func _ready() -> void:
 	pass
