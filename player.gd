@@ -2,18 +2,11 @@ class_name Player
 extends CharacterBody2D
 
 @onready var label: Label = $Label
-@onready var input_synchronizer: MultiplayerSynchronizer = $InputSynchronizer
+@onready var input_synchronizer: InputSynchronizer = $InputSynchronizer
 
 @export var player_id: int = -1
 
 const SPEED: float = 500.0
-
-func connect_enter_tree(pid: int) -> void:
-	%InputSynchronizer.tree_entered.connect(_on_input_enter_tree.bind(pid))
-
-func _on_input_enter_tree(pid: int) -> void:
-	print("tttee")
-	%InputSynchronizer.set_multiplayer_authority(pid)
 
 func _ready() -> void:
 	pass
@@ -23,4 +16,4 @@ func _physics_process(delta: float) -> void:
 		velocity = Vector2(input_synchronizer.axis_x, input_synchronizer.axis_y).normalized() * SPEED
 		move_and_collide(velocity * delta)
 
-	label.text = str(velocity) + "\n" + str(multiplayer.get_unique_id())
+		label.text = str(velocity) + "\n" + str(multiplayer.get_unique_id())
