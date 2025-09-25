@@ -10,10 +10,10 @@ size = Vector2(128, 128)
 properties/0/path = NodePath(".:position")
 properties/0/spawn = true
 properties/0/replication_mode = 1
-properties/1/path = NodePath("Player:axis_x")
+properties/1/path = NodePath(".:axis_x")
 properties/1/spawn = true
 properties/1/replication_mode = 1
-properties/2/path = NodePath("Player:axis_y")
+properties/2/path = NodePath(".:axis_y")
 properties/2/spawn = true
 properties/2/replication_mode = 1
 

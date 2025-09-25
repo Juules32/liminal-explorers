@@ -7,8 +7,8 @@ var player_id: int = -1
 
 const SPEED: float = 500.0
 
-var axis_x: float = 0
-var axis_y: float = 0
+@export var axis_x: float = 0
+@export var axis_y: float = 0
 
 func _init() -> void:
 	pass#set_multiplayer_authority(multiplayer.multiplayer_peer.get_unique_id())
