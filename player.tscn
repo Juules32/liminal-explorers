@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://c4qhceyy2snhx"]
+[gd_scene load_steps=7 format=3 uid="uid://c4qhceyy2snhx"]
 
 [ext_resource type="Script" uid="uid://bxfkpkbtlmudh" path="res://player.gd" id="1_onrkg"]
 [ext_resource type="Texture2D" uid="uid://r7ivhxxduvis" path="res://icon.svg" id="2_i3pqv"]
+[ext_resource type="Script" uid="uid://bdc7mavnntq5l" path="res://input_synchronizer.gd" id="3_i3pqv"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hqtel"]
 size = Vector2(128, 128)
@@ -15,10 +16,10 @@ properties/1/spawn = true
 properties/1/replication_mode = 1
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_onrkg"]
-properties/0/path = NodePath(".:axis_x")
+properties/0/path = NodePath("InputSynchronizer:axis_x")
 properties/0/spawn = true
 properties/0/replication_mode = 1
-properties/1/path = NodePath(".:axis_y")
+properties/1/path = NodePath("InputSynchronizer:axis_y")
 properties/1/spawn = true
 properties/1/replication_mode = 1
 
@@ -41,3 +42,4 @@ offset_bottom = 23.0
 [node name="InputSynchronizer" type="MultiplayerSynchronizer" parent="."]
 unique_name_in_owner = true
 replication_config = SubResource("SceneReplicationConfig_onrkg")
+script = ExtResource("3_i3pqv")

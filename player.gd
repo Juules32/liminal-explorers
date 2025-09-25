@@ -11,24 +11,14 @@ func _enter_tree() -> void:
 
 const SPEED: float = 500.0
 
-@export var axis_x: float = 0
-@export var axis_y: float = 0
-
 func _ready() -> void:
 	if input_synchronizer.get_multiplayer_authority() != multiplayer.get_unique_id():
 		set_process(false)
 		set_physics_process(false)
 
 func _physics_process(delta: float) -> void:
-	print(get_multiplayer_authority(), player_id)
-	if not multiplayer.is_server():
-		return
-	
-	axis_x = Input.get_axis("ui_left", "ui_right")
-	axis_y = Input.get_axis("ui_up", "ui_down")
-	
-	velocity = Vector2(axis_x, axis_y).normalized() * SPEED
-	
-	
+	if multiplayer.is_server():
+		velocity = Vector2(input_synchronizer.axis_x, input_synchronizer.axis_y).normalized() * SPEED
+		move_and_collide(velocity * delta)
+
 	label.text = str(velocity) + "\n" + str(multiplayer.get_unique_id())
-	move_and_collide(velocity * delta)
