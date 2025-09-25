@@ -9,9 +9,7 @@ extends CharacterBody2D
 const SPEED: float = 500.0
 
 func _ready() -> void:
-	if input_synchronizer.get_multiplayer_authority() != multiplayer.get_unique_id():
-		set_process(false)
-		set_physics_process(false)
+	pass
 
 func _physics_process(delta: float) -> void:
 	if multiplayer.is_server():
