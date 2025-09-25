@@ -102,6 +102,7 @@ func _connect_peer_to_lobby(peer_id: int) -> void:
 	player_instance.player_id = peer_id
 	player_instance.name = str(peer_id)
 	player_instance.position = Vector2(400, 400)
+	player_instance.connect_enter_tree(peer_id)
 	get_node("/root/World").add_child(player_instance)
 
 func _disconnect_peer_from_lobby(peer_id: int) -> void:
