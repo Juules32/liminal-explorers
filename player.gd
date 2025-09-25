@@ -4,15 +4,15 @@ extends CharacterBody2D
 @onready var label: Label = $Label
 @onready var input_synchronizer: MultiplayerSynchronizer = $InputSynchronizer
 
-var player_id: int = -1
+@export var player_id: int = -1:
+	set(id):
+		player_id = id
+		%InputSynchronizer.set_multiplayer_authority(id)
 
 const SPEED: float = 500.0
 
 @export var axis_x: float = 0
 @export var axis_y: float = 0
-
-func _enter_tree() -> void:
-	input_synchronizer.set_multiplayer_authority(player_id)
 
 func _physics_process(delta: float) -> void:
 	#if not is_multiplayer_authority():
