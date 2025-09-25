@@ -19,8 +19,8 @@ func _ready() -> void:
 	pass
 
 func _physics_process(delta: float) -> void:
-	if get_multiplayer_authority() == player_id:
+	if multiplayer.is_server():
 		velocity = Vector2(input_synchronizer.axis_x, input_synchronizer.axis_y).normalized() * SPEED
 		move_and_collide(velocity * delta)
 
-		label.text = str(velocity) + "\n" + str(multiplayer.get_unique_id())
+	label.text = str(velocity) + "\n" + str(multiplayer.get_unique_id())
