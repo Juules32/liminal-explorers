@@ -1,22 +1,14 @@
 @icon("res://addons/plenticons/icons/16x/objects/globe-yellow.png")
 
 extends Node2D
-@onready var steam_buttons: VBoxContainer = $SteamButtons
-@onready var e_net_buttons: VBoxContainer = $ENetButtons
 
-@onready var lobbies_container: VBoxContainer = $ScrollContainer/LobbiesContainer
+@onready var lobbies_container: VBoxContainer = $CenterContainer/TabContainer/Steam/MarginContainer/VBoxContainer/Panel/ScrollContainer/LobbiesContainer
 
 func _ready() -> void:
 	Steam.lobby_match_list.connect(_on_lobby_match_list)
 
-func _process(_delta: float) -> void:
-	steam_buttons.visible = NetworkManager.active_network_type == NetworkManager.MULTIPLAYER_NETWORK_TYPE.STEAM
-	e_net_buttons.visible = NetworkManager.active_network_type == NetworkManager.MULTIPLAYER_NETWORK_TYPE.ENET
-
-
 func _on_steam_host_button_pressed() -> void:
 	NetworkManager.create_lobby()
-
 
 func _on_steam_lobby_button_pressed() -> void:
 	NetworkManager.open_lobby_list()
@@ -37,14 +29,12 @@ func _on_lobby_match_list(lobby_ids: Variant) -> void:
 		button.pressed.connect(func() -> void: NetworkManager.join_lobby(lobby_id))
 		lobbies_container.add_child(button)
 
-
-func _on_option_button_item_selected(index: int) -> void:
-	NetworkManager.active_network_type = index as NetworkManager.MULTIPLAYER_NETWORK_TYPE
-
-
-
 func _on_e_net_host_button_pressed() -> void:
 	NetworkManager.create_lobby()
 
 func _on_e_net_join_button_pressed() -> void:
 	NetworkManager.join_lobby()
+
+func _on_tab_container_tab_changed(tab: int) -> void:
+	NetworkManager.active_network_type = tab as NetworkManager.MULTIPLAYER_NETWORK_TYPE
+	print("Switched to: ", NetworkManager.active_network_type)

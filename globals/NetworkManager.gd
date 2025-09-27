@@ -8,22 +8,24 @@ var enet_network_scene: Resource = preload("res://enet_network.tscn")
 var steam_network_scene: Resource = preload("res://steam_network.tscn")
 var active_network: AbstractNetwork
 
-func _build_multiplayer_network() -> void:
-	if not active_network:
-		print("Setting active_network")
-		
-		match active_network_type:
-			MULTIPLAYER_NETWORK_TYPE.ENET:
-				print("Setting network type to ENet")
-				_set_active_network(enet_network_scene)
-			MULTIPLAYER_NETWORK_TYPE.STEAM:
-				print("Setting network type to Steam")
-				_set_active_network(steam_network_scene)
-			_:
-				print("No match for network type!")
+func _build_multiplayer_network() -> Error:
+	match active_network_type:
+		MULTIPLAYER_NETWORK_TYPE.ENET:
+			print("Setting network type to ENet")
+			return _set_active_network(enet_network_scene)
+		MULTIPLAYER_NETWORK_TYPE.STEAM:
+			print("Setting network type to Steam")
+			return _set_active_network(steam_network_scene)
+		_:
+			print("No match for network type!")
+	return ERR_CANT_CREATE
 
-func _set_active_network(network_scene: Resource) -> void:
+func _set_active_network(network_scene: Resource) -> Error:
 	var network_scene_initialized: AbstractNetwork = network_scene.instantiate()
+	
+	if network_scene_initialized.init_error != OK:
+		return network_scene_initialized.init_error
+	
 	active_network = network_scene_initialized
 	
 	for child: Node in get_children():
@@ -31,18 +33,26 @@ func _set_active_network(network_scene: Resource) -> void:
 	
 	# Necessary for signals
 	add_child(active_network)
+	
+	return OK
 
 func create_lobby() -> void:
-	_build_multiplayer_network()
-	active_network.create_lobby()
+	var error: Error = _build_multiplayer_network()
+	
+	if error == OK:
+		active_network.create_lobby()
 
 func join_lobby(lobby_id: int = 0) -> void:
-	_build_multiplayer_network()
-	active_network.join_lobby(lobby_id)
+	var error: Error = _build_multiplayer_network()
+	
+	if error == OK:
+		active_network.join_lobby(lobby_id)
 
 func open_lobby_list() -> void:
-	_build_multiplayer_network()
-	active_network.open_lobby_list()
+	var error: Error = _build_multiplayer_network()
+	
+	if error == OK:
+		active_network.open_lobby_list()
 
 func connect_peer_to_lobby(peer_id: int) -> void:
 	print("Peer ", peer_id, " joined the game!")

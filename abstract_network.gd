@@ -2,6 +2,8 @@
 class_name AbstractNetwork
 extends Node
 
+var init_error: Error = OK
+
 @abstract
 func open_lobby_list() -> void
 

@@ -5,58 +5,128 @@
 [node name="World" type="Node2D"]
 script = ExtResource("1_f3sb7")
 
-[node name="SteamButtons" type="VBoxContainer" parent="."]
-visible = false
-offset_right = 132.0
-offset_bottom = 66.0
-
-[node name="SteamHostButton" type="Button" parent="SteamButtons"]
-layout_mode = 2
-text = "Host Steam Lobby"
-
-[node name="SteamLobbyButton" type="Button" parent="SteamButtons"]
-layout_mode = 2
-text = "Refresh Steam Lobbies"
-
-[node name="ENetButtons" type="VBoxContainer" parent="."]
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="ENetHostButton" type="Button" parent="ENetButtons"]
-layout_mode = 2
-text = "Host Local Game"
-
-[node name="ENetJoinButton" type="Button" parent="ENetButtons"]
-layout_mode = 2
-text = "Join Local Game"
-
-[node name="OptionButton" type="OptionButton" parent="."]
-offset_top = 225.0
-offset_right = 132.0
-offset_bottom = 256.0
-selected = 0
-item_count = 2
-popup/item_0/text = "ENet"
-popup/item_0/id = 0
-popup/item_1/text = "Steam"
-popup/item_1/id = 1
-
-[node name="ScrollContainer" type="ScrollContainer" parent="."]
-offset_left = 218.0
-offset_top = 1.0
-offset_right = 755.0
-offset_bottom = 404.0
-size_flags_horizontal = 4
-
-[node name="LobbiesContainer" type="VBoxContainer" parent="ScrollContainer"]
-layout_mode = 2
-
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
 _spawnable_scenes = PackedStringArray("uid://c4qhceyy2snhx")
 spawn_path = NodePath("..")
 
-[connection signal="pressed" from="SteamButtons/SteamHostButton" to="." method="_on_steam_host_button_pressed"]
-[connection signal="pressed" from="SteamButtons/SteamLobbyButton" to="." method="_on_steam_lobby_button_pressed"]
-[connection signal="pressed" from="ENetButtons/ENetHostButton" to="." method="_on_e_net_host_button_pressed"]
-[connection signal="pressed" from="ENetButtons/ENetJoinButton" to="." method="_on_e_net_join_button_pressed"]
-[connection signal="item_selected" from="OptionButton" to="." method="_on_option_button_item_selected"]
+[node name="CenterContainer" type="CenterContainer" parent="."]
+offset_top = -7.0
+offset_right = 1152.0
+offset_bottom = 648.0
+
+[node name="TabContainer" type="TabContainer" parent="CenterContainer"]
+layout_mode = 2
+current_tab = 0
+
+[node name="Local" type="ScrollContainer" parent="CenterContainer/TabContainer"]
+custom_minimum_size = Vector2(500, 350)
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/TabContainer/Local"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 18
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 18
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/TabContainer/Local/MarginContainer"]
+layout_mode = 2
+
+[node name="ENetHostButton" type="Button" parent="CenterContainer/TabContainer/Local/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Host Local Game"
+
+[node name="ENetJoinButton" type="Button" parent="CenterContainer/TabContainer/Local/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Join Local Game"
+
+[node name="Steam" type="ScrollContainer" parent="CenterContainer/TabContainer"]
+visible = false
+custom_minimum_size = Vector2(500, 350)
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/TabContainer/Steam"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 18
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 18
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/TabContainer/Steam/MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/TabContainer/Steam/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="CenterContainer/TabContainer/Steam/MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+placeholder_text = "Enter Lobby Name"
+max_length = 20
+
+[node name="SteamHostButton" type="Button" parent="CenterContainer/TabContainer/Steam/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Create Steam Lobby"
+
+[node name="SteamLobbyButton" type="Button" parent="CenterContainer/TabContainer/Steam/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Refresh Steam Lobbies"
+
+[node name="Panel" type="Panel" parent="CenterContainer/TabContainer/Steam/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 240)
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="CenterContainer/TabContainer/Steam/MarginContainer/VBoxContainer/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="LobbiesContainer" type="VBoxContainer" parent="CenterContainer/TabContainer/Steam/MarginContainer/VBoxContainer/Panel/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/TabContainer/Steam/MarginContainer/VBoxContainer/Panel/ScrollContainer/LobbiesContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="Control" type="HBoxContainer" parent="CenterContainer/TabContainer/Steam/MarginContainer/VBoxContainer/Panel/ScrollContainer/LobbiesContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CenterContainer/TabContainer/Steam/MarginContainer/VBoxContainer/Panel/ScrollContainer/LobbiesContainer/MarginContainer/Control"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Name"
+
+[node name="Label3" type="Label" parent="CenterContainer/TabContainer/Steam/MarginContainer/VBoxContainer/Panel/ScrollContainer/LobbiesContainer/MarginContainer/Control"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Owner"
+
+[node name="Label2" type="Label" parent="CenterContainer/TabContainer/Steam/MarginContainer/VBoxContainer/Panel/ScrollContainer/LobbiesContainer/MarginContainer/Control"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Num Players"
+
+[node name="Button" type="Button" parent="CenterContainer/TabContainer/Steam/MarginContainer/VBoxContainer/Panel/ScrollContainer/LobbiesContainer/MarginContainer/Control"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+text = "Join"
+
+[connection signal="tab_changed" from="CenterContainer/TabContainer" to="." method="_on_tab_container_tab_changed"]
+[connection signal="pressed" from="CenterContainer/TabContainer/Local/MarginContainer/VBoxContainer/ENetHostButton" to="." method="_on_e_net_host_button_pressed"]
+[connection signal="pressed" from="CenterContainer/TabContainer/Local/MarginContainer/VBoxContainer/ENetJoinButton" to="." method="_on_e_net_join_button_pressed"]
+[connection signal="pressed" from="CenterContainer/TabContainer/Steam/MarginContainer/VBoxContainer/HBoxContainer/SteamHostButton" to="." method="_on_steam_host_button_pressed"]
+[connection signal="pressed" from="CenterContainer/TabContainer/Steam/MarginContainer/VBoxContainer/SteamLobbyButton" to="." method="_on_steam_lobby_button_pressed"]

@@ -1,8 +1,6 @@
 class_name SteamNetwork
 extends AbstractNetwork
 
-const LOBBY_NAME = "xxxa"
-const LOBBY_MODE: String = "CoOP"
 const MAX_MEMBERS: int = 10
 const STEAM_APP_ID: int = 480 # Test game app id
 
@@ -11,7 +9,7 @@ var hosted_lobby_id: int = 0
 var steam_id: int = 0
 var steam_username: String = ""
 
-func _ready() -> void:
+func _init() -> void:
 	print("Init Steam")
 	OS.set_environment("SteamAppId", str(STEAM_APP_ID))
 	OS.set_environment("SteamGameId", str(STEAM_APP_ID))
@@ -20,8 +18,10 @@ func _ready() -> void:
 	
 	if initialize_response['status'] > 0:
 		print("Failed to init Steam! Shutting down. %s" % initialize_response)
-		get_tree().quit()
-	
+		set_process(false)
+		init_error = ERR_CANT_CONNECT
+		return
+
 	steam_id = Steam.getSteamID()
 	steam_username = Steam.getPersonaName()
 	print("Steam id: ", steam_id)
@@ -29,11 +29,11 @@ func _ready() -> void:
 
 	if Steam.isSubscribed() == false:
 		print("User does not own game!")
-		get_tree().quit()
+		init_error = ERR_UNAUTHORIZED
 
+func _ready() -> void:
 	Steam.lobby_created.connect(_on_lobby_created)
 	Steam.lobby_joined.connect(_on_lobby_joined)
-	NetworkManager.open_lobby_list()
 
 func _process(_delta: float) -> void:
 	Steam.run_callbacks()
@@ -57,9 +57,7 @@ func _on_lobby_created(foo: int, lobby_id: int) -> void:
 		hosted_lobby_id = lobby_id
 		
 		Steam.setLobbyJoinable(lobby_id, true)
-		
-		Steam.setLobbyData(lobby_id, "name", LOBBY_NAME)
-		Steam.setLobbyData(lobby_id, "mode", LOBBY_MODE)
+		Steam.setLobbyData(lobby_id, "name", steam_username + "'s lobby")
 		
 		var error: Error = peer.create_host(0)
 		if error == OK:
@@ -95,7 +93,5 @@ func _on_lobby_joined(lobby: int, _permissions: int, _locked: bool, response: in
 			11: print("A user you have blocked is in the lobby.")
 
 func open_lobby_list() -> void:
-	#if not Steam.isSteamRunning():
-	#	return
 	Steam.addRequestLobbyListDistanceFilter(Steam.LOBBY_DISTANCE_FILTER_WORLDWIDE)
 	Steam.requestLobbyList()
