@@ -11,13 +11,6 @@ extends CharacterBody2D
 
 const SPEED: float = 500.0
 
-func connect_enter_tree(pid: int) -> void:
-	%InputSynchronizer.tree_entered.connect(_on_input_enter_tree.bind(pid))
-
-func _on_input_enter_tree(_pid: int) -> void:
-	print("tttee")
-	# %InputSynchronizer.set_multiplayer_authority(pid)
-
 func _ready() -> void:
 	pass
 
