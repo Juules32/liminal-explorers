@@ -12,7 +12,7 @@ func _ready() -> void:
 	multiplayer.peer_connected.connect(connect_peer_to_lobby)
 	multiplayer.peer_disconnected.connect(disconnect_peer_from_lobby)
 
-func _build_multiplayer_network() -> Error:
+func build_multiplayer_network() -> Error:
 	match active_network_type:
 		MULTIPLAYER_NETWORK_TYPE.ENET:
 			print("Setting network type to ENet")
@@ -40,23 +40,28 @@ func _set_active_network(network_scene: Resource) -> Error:
 	
 	return OK
 
-func create_lobby(lobby_name: String = "") -> void:
-	var error: Error = _build_multiplayer_network()
+func create_lobby(lobby_name: String = "") -> Error:
+	var error: Error = build_multiplayer_network()
 	
 	if error == OK:
 		active_network.create_lobby(lobby_name)
+	
+	return error
 
-func join_lobby(lobby_id: int = 0) -> void:
-	var error: Error = _build_multiplayer_network()
+func join_lobby(lobby_id: int = 0) -> Error:
+	var error: Error = build_multiplayer_network()
 	
 	if error == OK:
 		active_network.join_lobby(lobby_id)
-
-func open_lobby_list() -> void:
-	var error: Error = _build_multiplayer_network()
 	
-	if error == OK:
+	return error
+
+func open_lobby_list() -> Error:
+	if active_network and Steam.isSteamRunning():
 		active_network.open_lobby_list()
+		return OK
+	
+	return ERR_CANT_CONNECT
 
 func connect_peer_to_lobby(peer_id: int) -> void:
 	if multiplayer.is_server():

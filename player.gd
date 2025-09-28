@@ -1,3 +1,5 @@
+@icon("res://addons/plenticons/icons/16x/creatures/person-yellow.png")
+
 class_name Player
 extends CharacterBody2D
 
