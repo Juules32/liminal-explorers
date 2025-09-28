@@ -9,6 +9,7 @@ script = ExtResource("1_f3sb7")
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
 _spawnable_scenes = PackedStringArray("uid://c4qhceyy2snhx")
 spawn_path = NodePath("..")
+spawn_limit = 10
 
 [node name="Button" type="Button" parent="."]
 offset_left = 15.0
