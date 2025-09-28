@@ -72,6 +72,7 @@ func connect_peer_to_lobby(peer_id: int) -> void:
 		player_instance.position = Vector2(400, 400)
 		get_node("/root/Game/World").add_child(player_instance)
 
+# TODO: Make this work as intended
 func disconnect_peer_from_lobby(peer_id: int) -> void:
 	var player_to_delete: Node = get_node("/root/Game/World").get_node(str(peer_id))
 	if player_to_delete:
