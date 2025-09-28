@@ -73,14 +73,13 @@ func connect_peer_to_lobby(peer_id: int) -> void:
 		get_node("/root/Game/World").add_child(player_instance)
 
 func disconnect_peer_from_lobby(peer_id: int) -> void:
-	if multiplayer.is_server():
-		var player_to_delete: Node = get_node("/root/Game/World").get_node(str(peer_id))
-		if player_to_delete:
-			print("Peer ", peer_id, " left the game!")
-			player_to_delete.queue_free()
-			if peer_id == multiplayer.get_unique_id():
-				(func() -> void: multiplayer.multiplayer_peer.close()).call_deferred()
-				multiplayer.peer_connected.disconnect(connect_peer_to_lobby)
-				multiplayer.peer_disconnected.disconnect(disconnect_peer_from_lobby)
-		else:
-			print("Couldn't find peer: ", peer_id)
+	var player_to_delete: Node = get_node("/root/Game/World").get_node(str(peer_id))
+	if player_to_delete:
+		print("Peer ", peer_id, " left the game!")
+		player_to_delete.queue_free()
+	else:
+		print("Couldn't find peer: ", peer_id)
+	if peer_id == multiplayer.get_unique_id():
+		(func() -> void: multiplayer.multiplayer_peer.close()).call_deferred()
+		multiplayer.peer_connected.disconnect(connect_peer_to_lobby)
+		multiplayer.peer_disconnected.disconnect(disconnect_peer_from_lobby)
