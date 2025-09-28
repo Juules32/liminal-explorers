@@ -10,9 +10,6 @@ func create_lobby(_lobby_name: String) -> void:
 	peer.create_server(SERVER_PORT)
 	multiplayer.multiplayer_peer = peer
 	
-	multiplayer.peer_connected.connect(NetworkManager.connect_peer_to_lobby)
-	multiplayer.peer_disconnected.connect(NetworkManager.disconnect_peer_from_lobby)
-
 	NetworkManager.connect_peer_to_lobby(1)
 
 func join_lobby(_lobby_id: int) -> void:

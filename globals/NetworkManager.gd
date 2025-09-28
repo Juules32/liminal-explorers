@@ -8,8 +8,9 @@ var enet_network_scene: Resource = preload("res://enet_network.tscn")
 var steam_network_scene: Resource = preload("res://steam_network.tscn")
 var active_network: AbstractNetwork
 
-signal enter_world
-signal quit_world
+func _ready() -> void:
+	multiplayer.peer_connected.connect(connect_peer_to_lobby)
+	multiplayer.peer_disconnected.connect(disconnect_peer_from_lobby)
 
 func _build_multiplayer_network() -> Error:
 	match active_network_type:
@@ -58,27 +59,23 @@ func open_lobby_list() -> void:
 		active_network.open_lobby_list()
 
 func connect_peer_to_lobby(peer_id: int) -> void:
-	print("Peer ", peer_id, " joined the game!")
-	var player_instance: Player = PLAYER.instantiate()
-	player_instance.player_id = peer_id
-	player_instance.name = str(peer_id)
-	player_instance.position = Vector2(400, 400)
-	get_node("/root/Game/World").add_child(player_instance)
-	if peer_id == multiplayer.get_unique_id():
-		enter_world.emit()
-
-func close_multiplayer_peer() -> void:
-	multiplayer.multiplayer_peer.close()
+	if multiplayer.is_server():
+		print("Peer ", peer_id, " joined the game!")
+		var player_instance: Player = PLAYER.instantiate()
+		player_instance.player_id = peer_id
+		player_instance.name = str(peer_id)
+		player_instance.position = Vector2(400, 400)
+		get_node("/root/Game/World").add_child(player_instance)
 
 func disconnect_peer_from_lobby(peer_id: int) -> void:
-	var player_to_delete: Node = get_node("/root/Game/World").get_node(str(peer_id))
-	if player_to_delete:
-		print("Peer ", peer_id, " left the game!")
-		player_to_delete.queue_free()
-		if peer_id == multiplayer.get_unique_id():
-			close_multiplayer_peer.call_deferred()
-			multiplayer.peer_connected.disconnect(connect_peer_to_lobby)
-			multiplayer.peer_disconnected.disconnect(disconnect_peer_from_lobby)
-			quit_world.emit()
-	else:
-		print("Couldn't find peer: ", peer_id)
+	if multiplayer.is_server():
+		var player_to_delete: Node = get_node("/root/Game/World").get_node(str(peer_id))
+		if player_to_delete:
+			print("Peer ", peer_id, " left the game!")
+			player_to_delete.queue_free()
+			if peer_id == multiplayer.get_unique_id():
+				(func() -> void: multiplayer.multiplayer_peer.close()).call_deferred()
+				multiplayer.peer_connected.disconnect(connect_peer_to_lobby)
+				multiplayer.peer_disconnected.disconnect(disconnect_peer_from_lobby)
+		else:
+			print("Couldn't find peer: ", peer_id)

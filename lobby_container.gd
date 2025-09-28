@@ -1,3 +1,4 @@
+class_name LobbyContainer
 extends CenterContainer
 
 @onready var lobbies_container: VBoxContainer = $TabContainer/Steam/MarginContainer/VBoxContainer/Panel/ScrollContainer/LobbiesContainer
@@ -6,12 +7,15 @@ const STEAM_LOBBY_ENTRY = preload("uid://bpombmlv0o6ts")
 
 func _ready() -> void:
 	Steam.lobby_match_list.connect(_on_lobby_match_list)
+	NetworkManager.open_lobby_list()
 
 func _on_steam_host_button_pressed() -> void:
 	NetworkManager.create_lobby(lobby_name_line_edit.text)
+	hide()
 
 func _on_steam_lobby_button_pressed() -> void:
 	NetworkManager.open_lobby_list()
+	hide()
 
 func _on_lobby_match_list(lobby_ids: Variant) -> void:
 	for lobby_child: Node in lobbies_container.get_children():
@@ -36,9 +40,11 @@ func _on_lobby_match_list(lobby_ids: Variant) -> void:
 
 func _on_e_net_host_button_pressed() -> void:
 	NetworkManager.create_lobby()
+	hide()
 
 func _on_e_net_join_button_pressed() -> void:
 	NetworkManager.join_lobby()
+	hide()
 
 func _on_tab_container_tab_changed(tab: int) -> void:
 	NetworkManager.active_network_type = tab as NetworkManager.MULTIPLAYER_NETWORK_TYPE
