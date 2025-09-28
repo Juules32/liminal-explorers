@@ -1,7 +1,7 @@
 @icon("res://addons/plenticons/icons/16x/objects/globe-yellow.png")
 
 class_name World
-extends Node
+extends Node2D
 
 
 func _on_button_pressed() -> void:

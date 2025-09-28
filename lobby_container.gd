@@ -5,7 +5,6 @@ extends CenterContainer
 const STEAM_LOBBY_ENTRY = preload("uid://bpombmlv0o6ts")
 
 func _ready() -> void:
-	multiplayer.multiplayer_peer.close()
 	Steam.lobby_match_list.connect(_on_lobby_match_list)
 
 func _on_steam_host_button_pressed() -> void:

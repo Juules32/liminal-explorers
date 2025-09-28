@@ -8,6 +8,9 @@ var enet_network_scene: Resource = preload("res://enet_network.tscn")
 var steam_network_scene: Resource = preload("res://steam_network.tscn")
 var active_network: AbstractNetwork
 
+signal enter_world
+signal quit_world
+
 func _build_multiplayer_network() -> Error:
 	match active_network_type:
 		MULTIPLAYER_NETWORK_TYPE.ENET:
@@ -60,15 +63,22 @@ func connect_peer_to_lobby(peer_id: int) -> void:
 	player_instance.player_id = peer_id
 	player_instance.name = str(peer_id)
 	player_instance.position = Vector2(400, 400)
-	get_node("/root/World").add_child(player_instance)
+	get_node("/root/Game/World").add_child(player_instance)
+	if peer_id == multiplayer.get_unique_id():
+		enter_world.emit()
+
+func close_multiplayer_peer() -> void:
+	multiplayer.multiplayer_peer.close()
 
 func disconnect_peer_from_lobby(peer_id: int) -> void:
-	var player_to_delete: Node = get_node("/root/World").get_node(str(peer_id))
+	var player_to_delete: Node = get_node("/root/Game/World").get_node(str(peer_id))
 	if player_to_delete:
 		print("Peer ", peer_id, " left the game!")
 		player_to_delete.queue_free()
 		if peer_id == multiplayer.get_unique_id():
-			get_tree().change_scene_to_file("res://lobby_container.tscn")
-			await get_tree().scene_changed
+			close_multiplayer_peer.call_deferred()
+			multiplayer.peer_connected.disconnect(connect_peer_to_lobby)
+			multiplayer.peer_disconnected.disconnect(disconnect_peer_from_lobby)
+			quit_world.emit()
 	else:
 		print("Couldn't find peer: ", peer_id)
