@@ -8,6 +8,7 @@ var peer: SteamMultiplayerPeer = SteamMultiplayerPeer.new()
 var hosted_lobby_id: int = 0
 var steam_id: int = 0
 var steam_username: String = ""
+var lobby_name: String = "Unnamed Lobby"
 
 func _init() -> void:
 	print("Init Steam")
@@ -38,11 +39,11 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	Steam.run_callbacks()
 
-func create_lobby() -> void:
+func create_lobby(new_lobby_name: String) -> void:
 	print("Creating lobby...")
 	print(multiplayer)
-	multiplayer.peer_connected.connect(NetworkManager.connect_peer_to_lobby)
-	multiplayer.peer_disconnected.connect(NetworkManager.disconnect_peer_from_lobby)
+	if new_lobby_name:
+		lobby_name = new_lobby_name
 	
 	Steam.createLobby(Steam.LOBBY_TYPE_PUBLIC, MAX_MEMBERS)
 
@@ -57,7 +58,8 @@ func _on_lobby_created(foo: int, lobby_id: int) -> void:
 		hosted_lobby_id = lobby_id
 		
 		Steam.setLobbyJoinable(lobby_id, true)
-		Steam.setLobbyData(lobby_id, "name", steam_username + "'s lobby")
+		Steam.setLobbyData(lobby_id, "name", lobby_name)
+		Steam.setLobbyData(lobby_id, "owner", steam_username)
 		
 		var error: Error = peer.create_host(0)
 		if error == OK:

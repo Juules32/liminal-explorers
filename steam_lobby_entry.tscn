@@ -1,0 +1,32 @@
+[gd_scene load_steps=2 format=3 uid="uid://bpombmlv0o6ts"]
+
+[ext_resource type="Script" uid="uid://cwikbpp2nolt8" path="res://steam_lobby_entry.gd" id="1_7k8bp"]
+
+[node name="SteamLobbyEntry" type="MarginContainer"]
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+script = ExtResource("1_7k8bp")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="NameLabel" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Name"
+
+[node name="OwnerLabel" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Owner"
+
+[node name="PlayerCountLabel" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Players"
+
+[node name="JoinButton" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+text = "Join"

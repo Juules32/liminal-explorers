@@ -8,7 +8,7 @@ var init_error: Error = OK
 func open_lobby_list() -> void
 
 @abstract
-func create_lobby() -> void
+func create_lobby(lobby_name: String) -> void
 
 @abstract
 func join_lobby(lobby_id: int) -> void

@@ -1,0 +1,46 @@
+extends CenterContainer
+
+@onready var lobbies_container: VBoxContainer = $TabContainer/Steam/MarginContainer/VBoxContainer/Panel/ScrollContainer/LobbiesContainer
+@onready var lobby_name_line_edit: LineEdit = $TabContainer/Steam/MarginContainer/VBoxContainer/HBoxContainer/LobbyNameLineEdit
+const STEAM_LOBBY_ENTRY = preload("uid://bpombmlv0o6ts")
+
+func _ready() -> void:
+	multiplayer.multiplayer_peer.close()
+	Steam.lobby_match_list.connect(_on_lobby_match_list)
+
+func _on_steam_host_button_pressed() -> void:
+	NetworkManager.create_lobby(lobby_name_line_edit.text)
+
+func _on_steam_lobby_button_pressed() -> void:
+	NetworkManager.open_lobby_list()
+
+func _on_lobby_match_list(lobby_ids: Variant) -> void:
+	for lobby_child: Node in lobbies_container.get_children():
+		print(lobby_child.get_index())
+		if lobby_child.get_index() != 0:
+			lobby_child.queue_free()
+	
+	for lobby_id in (lobby_ids as Array[int]):
+		var lobby_name: String = Steam.getLobbyData(lobby_id, "name")
+		var lobby_owner: String = Steam.getLobbyData(lobby_id, "owner")
+		var player_count: int = Steam.getNumLobbyMembers(lobby_id)
+		var steam_lobby_entry: SteamLobbyEntry = STEAM_LOBBY_ENTRY.instantiate()
+		steam_lobby_entry.ready.connect(func() -> void:
+			steam_lobby_entry.join_button.pressed.connect(func() -> void:
+				NetworkManager.join_lobby(lobby_id)
+			)
+			steam_lobby_entry.name_label.text = lobby_name
+			steam_lobby_entry.owner_label.text = lobby_owner
+			steam_lobby_entry.player_count_label.text = str(player_count)
+		)
+		lobbies_container.add_child(steam_lobby_entry)
+
+func _on_e_net_host_button_pressed() -> void:
+	NetworkManager.create_lobby()
+
+func _on_e_net_join_button_pressed() -> void:
+	NetworkManager.join_lobby()
+
+func _on_tab_container_tab_changed(tab: int) -> void:
+	NetworkManager.active_network_type = tab as NetworkManager.MULTIPLAYER_NETWORK_TYPE
+	print("Switched to: ", NetworkManager.active_network_type)
