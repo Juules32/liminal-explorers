@@ -44,8 +44,6 @@ func create_lobby(new_lobby_name: String) -> void:
 	print(multiplayer)
 	if new_lobby_name:
 		lobby_name = new_lobby_name
-	multiplayer.peer_connected.connect(NetworkManager.connect_peer_to_lobby)
-	multiplayer.peer_disconnected.connect(NetworkManager.disconnect_peer_from_lobby)
 	
 	Steam.createLobby(Steam.LOBBY_TYPE_PUBLIC, MAX_MEMBERS)
 

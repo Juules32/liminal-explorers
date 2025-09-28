@@ -8,10 +8,6 @@ var peer: ENetMultiplayerPeer = ENetMultiplayerPeer.new()
 
 func create_lobby(_lobby_name: String) -> void:
 	peer.create_server(SERVER_PORT)
-	
-	multiplayer.peer_connected.connect(NetworkManager.connect_peer_to_lobby)
-	multiplayer.peer_disconnected.connect(NetworkManager.disconnect_peer_from_lobby)
-
 	multiplayer.multiplayer_peer = peer
 	
 	NetworkManager.connect_peer_to_lobby(1)

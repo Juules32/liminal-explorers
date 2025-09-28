@@ -8,6 +8,10 @@ var enet_network_scene: Resource = preload("res://enet_network.tscn")
 var steam_network_scene: Resource = preload("res://steam_network.tscn")
 var active_network: AbstractNetwork
 
+func _ready() -> void:
+	multiplayer.peer_connected.connect(NetworkManager.connect_peer_to_lobby)
+	multiplayer.peer_disconnected.connect(NetworkManager.disconnect_peer_from_lobby)
+
 func _build_multiplayer_network() -> Error:
 	match active_network_type:
 		MULTIPLAYER_NETWORK_TYPE.ENET:
@@ -60,8 +64,6 @@ func connect_peer_to_lobby(peer_id: int) -> void:
 	player_instance.player_id = peer_id
 	player_instance.name = str(peer_id)
 	player_instance.position = Vector2(400, 400)
-	get_tree().change_scene_to_file("res://world.tscn")
-	await get_tree().scene_changed
 	get_node("/root/World").add_child(player_instance)
 
 func disconnect_peer_from_lobby(peer_id: int) -> void:
