@@ -1,0 +1,152 @@
+[gd_scene load_steps=3 format=3 uid="uid://b7atj40344vbi"]
+
+[ext_resource type="Script" uid="uid://dwiw4dfwdcxup" path="res://scenes/lobby_container/lobby_container.gd" id="1_gsqjs"]
+[ext_resource type="PackedScene" uid="uid://bpombmlv0o6ts" path="res://scenes/lobby_container/steam_lobby_entry.tscn" id="2_mh341"]
+
+[node name="LobbyContainer" type="CenterContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_gsqjs")
+
+[node name="TabContainer" type="TabContainer" parent="."]
+layout_mode = 2
+current_tab = 0
+
+[node name="Local" type="ScrollContainer" parent="TabContainer"]
+custom_minimum_size = Vector2(500, 350)
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="TabContainer/Local"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 18
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 18
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Local/MarginContainer"]
+layout_mode = 2
+
+[node name="ENetHostButton" type="Button" parent="TabContainer/Local/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Create Local Lobby"
+
+[node name="ENetJoinButton" type="Button" parent="TabContainer/Local/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Join Local Lobby"
+
+[node name="Steam" type="ScrollContainer" parent="TabContainer"]
+visible = false
+custom_minimum_size = Vector2(500, 350)
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="TabContainer/Steam"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 18
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 18
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Steam/MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TabContainer/Steam/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="LobbyNameLineEdit" type="LineEdit" parent="TabContainer/Steam/MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+placeholder_text = "Lobby Name"
+max_length = 10
+
+[node name="SteamHostButton" type="Button" parent="TabContainer/Steam/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Create Steam Lobby"
+
+[node name="SteamRunningLabel" type="RichTextLabel" parent="TabContainer/Steam/MarginContainer/VBoxContainer/HBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+bbcode_enabled = true
+text = "[color=red][i]Steam is not running[/i][/color]"
+fit_content = true
+vertical_alignment = 1
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="TabContainer/Steam/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Panel" type="Panel" parent="TabContainer/Steam/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 240)
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="TabContainer/Steam/MarginContainer/VBoxContainer/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="LobbiesContainer" type="VBoxContainer" parent="TabContainer/Steam/MarginContainer/VBoxContainer/Panel/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SteamLobbyEntry" parent="TabContainer/Steam/MarginContainer/VBoxContainer/Panel/ScrollContainer/LobbiesContainer" instance=ExtResource("2_mh341")]
+layout_mode = 2
+
+[node name="JoinButton" parent="TabContainer/Steam/MarginContainer/VBoxContainer/Panel/ScrollContainer/LobbiesContainer/SteamLobbyEntry/HBoxContainer" index="3"]
+modulate = Color(1, 1, 1, 0)
+disabled = true
+
+[node name="Iroh" type="ScrollContainer" parent="TabContainer"]
+visible = false
+custom_minimum_size = Vector2(500, 350)
+layout_mode = 2
+metadata/_tab_index = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="TabContainer/Iroh"]
+layout_mode = 2
+theme_override_constants/margin_left = 18
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 18
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Iroh/MarginContainer"]
+layout_mode = 2
+
+[node name="IrohHostButton" type="Button" parent="TabContainer/Iroh/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Create Iroh Lobby"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TabContainer/Iroh/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="ConnectionStringLineEdit" type="LineEdit" parent="TabContainer/Iroh/MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+placeholder_text = "Enter Connection String"
+
+[node name="IrohJoinButton" type="Button" parent="TabContainer/Iroh/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Join Iroh Lobby"
+
+[node name="CheckSteamRunningTimer" type="Timer" parent="."]
+autostart = true
+
+[connection signal="tab_changed" from="TabContainer" to="." method="_on_tab_container_tab_changed"]
+[connection signal="pressed" from="TabContainer/Local/MarginContainer/VBoxContainer/ENetHostButton" to="." method="_on_e_net_host_button_pressed"]
+[connection signal="pressed" from="TabContainer/Local/MarginContainer/VBoxContainer/ENetJoinButton" to="." method="_on_e_net_join_button_pressed"]
+[connection signal="pressed" from="TabContainer/Steam/MarginContainer/VBoxContainer/HBoxContainer/SteamHostButton" to="." method="_on_steam_host_button_pressed"]
+[connection signal="pressed" from="TabContainer/Iroh/MarginContainer/VBoxContainer/IrohHostButton" to="." method="_on_iroh_host_button_pressed"]
+[connection signal="pressed" from="TabContainer/Iroh/MarginContainer/VBoxContainer/HBoxContainer/IrohJoinButton" to="." method="_on_iroh_join_button_pressed"]
+[connection signal="timeout" from="CheckSteamRunningTimer" to="." method="_on_check_steam_running_timer_timeout"]
+
+[editable path="TabContainer/Steam/MarginContainer/VBoxContainer/Panel/ScrollContainer/LobbiesContainer/SteamLobbyEntry"]

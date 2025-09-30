@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://d3xag4pw71grj"]
+
+[ext_resource type="Script" uid="uid://d0of4a67lxhxc" path="res://scenes/networks/iroh_network.gd" id="1_1f3uc"]
+
+[node name="IrohNetwork" type="Node"]
+script = ExtResource("1_1f3uc")
