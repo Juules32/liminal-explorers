@@ -44,6 +44,6 @@ func process_voice() -> void:
 	
 	receive_buffer = receive_buffer.slice(frames_to_process)
 
-@rpc("any_peer", "call_remote", "unreliable")
+@rpc("any_peer", "call_remote", "unreliable_ordered")
 func send_data(compressed_data: PackedFloat32Array) -> void:
 	receive_buffer.append_array(compressed_data)

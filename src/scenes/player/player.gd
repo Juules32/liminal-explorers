@@ -10,6 +10,7 @@ extends CharacterBody2D
 	set(id):
 		player_id = id
 		%InputSynchronizer.set_multiplayer_authority(id)
+		%AudioManager.set_multiplayer_authority(id)
 
 const SPEED: float = 500.0
 

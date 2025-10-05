@@ -53,12 +53,12 @@ replication_config = SubResource("SceneReplicationConfig_onrkg")
 script = ExtResource("3_i3pqv")
 
 [node name="AudioManager" type="Node" parent="."]
+unique_name_in_owner = true
 script = ExtResource("4_lvxji")
 
 [node name="MicOutput" type="AudioStreamPlayer2D" parent="AudioManager"]
 stream = SubResource("AudioStreamGenerator_lvxji")
 autoplay = true
-bus = &"Record"
 
 [node name="MicInput" type="AudioStreamPlayer" parent="AudioManager"]
 stream = SubResource("AudioStreamMicrophone_lvxji")
