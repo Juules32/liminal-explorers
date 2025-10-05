@@ -3,3 +3,5 @@
 /android/
 bin/*
 !bin/.gitkeep
+~libgodotsteam.windows*
+~godot_iroh*
