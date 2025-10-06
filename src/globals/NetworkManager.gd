@@ -69,7 +69,6 @@ func connect_peer_to_lobby(peer_id: int) -> void:
 		var player_instance: Player = PLAYER.instantiate()
 		player_instance.player_id = peer_id
 		player_instance.name = str(peer_id)
-		player_instance.position = Vector2(400, 400)
 		get_node("/root/Game/World").add_child(player_instance)
 
 

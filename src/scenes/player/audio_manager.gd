@@ -1,11 +1,12 @@
 class_name AudioManager
-extends Node
+extends Node3D
 
 var bus_index: int = 0
 var effect: AudioEffectCapture
 var playback: AudioStreamGeneratorPlayback
 @onready var mic_input: AudioStreamPlayer = $MicInput
-@onready var mic_output: AudioStreamPlayer2D = $MicOutput
+@onready var mic_output: RaytracedAudioPlayer3D = $MicOutput
+
 @export var input_threshold: float = 0.005
 var receive_buffer: PackedFloat32Array = PackedFloat32Array()
 
@@ -19,7 +20,7 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	
 	# NOTE: USEFUL ONLY FOR DEBUGGING. IN PRODUCTION, CLIENTS SHOULD BE ABLE TO SPEAK
-	 if not multiplayer.is_server():
+	if not multiplayer.is_server():
 		return
 	
 	if not is_multiplayer_authority():

@@ -1,7 +1,7 @@
 @icon("res://addons/plenticons/icons/16x/objects/globe-yellow.png")
 
 class_name World
-extends Node2D
+extends Node
 
 @onready var copy_connection_string_button: Button = $HBoxContainer/CopyConnectionStringButton
 
