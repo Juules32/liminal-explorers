@@ -9,15 +9,24 @@ var playback: AudioStreamGeneratorPlayback
 @export var input_threshold: float = 0.005
 var receive_buffer: PackedFloat32Array = PackedFloat32Array()
 
+const FRAMES: int = 512
+
 func _ready() -> void:
 	bus_index = AudioServer.get_bus_index(&"Record")
 	effect = AudioServer.get_bus_effect(bus_index, 0)
 	playback = mic_output.get_stream_playback()
 
 func _process(_delta: float) -> void:
-	if is_multiplayer_authority():
-		process_microphone()
-	process_voice()
+	
+	# NOTE: USEFUL ONLY FOR DEBUGGING. IN PRODUCTION, CLIENTS SHOULD BE ABLE TO SPEAK
+	 if not multiplayer.is_server():
+		return
+	
+	if not is_multiplayer_authority():
+		return
+	if effect.can_get_buffer(FRAMES) and playback.can_push_buffer(FRAMES):
+		send_data.rpc(effect.get_buffer(FRAMES))
+	effect.clear_buffer()
 
 func process_microphone() -> void:
 	var stereo_data: PackedVector2Array = effect.get_buffer(effect.get_frames_available())
@@ -44,6 +53,7 @@ func process_voice() -> void:
 	
 	receive_buffer = receive_buffer.slice(frames_to_process)
 
-@rpc("any_peer", "call_remote", "unreliable_ordered")
-func send_data(compressed_data: PackedFloat32Array) -> void:
-	receive_buffer.append_array(compressed_data)
+@rpc("any_peer", "call_remote", "unreliable")
+func send_data(data: PackedVector2Array) -> void:
+	for i: int in range(FRAMES):
+		playback.push_frame(data[i])
