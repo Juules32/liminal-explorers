@@ -20,8 +20,8 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	
 	# NOTE: USEFUL ONLY FOR DEBUGGING. IN PRODUCTION, CLIENTS SHOULD BE ABLE TO SPEAK
-	if not multiplayer.is_server():
-		return
+	#if not multiplayer.is_server():
+	#	return
 	
 	if not is_multiplayer_authority():
 		return
