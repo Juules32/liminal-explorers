@@ -66,6 +66,7 @@ func open_lobby_list() -> Error:
 func connect_peer_to_lobby(peer_id: int) -> void:
 	if multiplayer.is_server():
 		print("Peer ", peer_id, " joined the game!")
+		var unique_id: int = multiplayer.get_remote_sender_id()
 		var player_instance: Player = PLAYER.instantiate()
 		player_instance.player_id = peer_id
 		player_instance.name = str(peer_id)

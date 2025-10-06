@@ -1,12 +1,22 @@
-[gd_scene load_steps=4 format=3 uid="uid://5s7e8m6rcial"]
+[gd_scene load_steps=9 format=3 uid="uid://5s7e8m6rcial"]
 
 [ext_resource type="Script" uid="uid://dnpos742jnngb" path="res://scenes/world/world.gd" id="1_f3sb7"]
+[ext_resource type="AudioStream" uid="uid://c5qpnfga41t4p" path="res://art/House In a Forest Loop.ogg" id="2_1fp7r"]
+[ext_resource type="Script" uid="uid://dkb8ltjc6067n" path="res://addons/raytraced_audio/raytraced_audio_player_3d.gd" id="3_6m72w"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_dphjl"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_1fp7r"]
 size = Vector3(40, 2, 40)
 
 [sub_resource type="BoxMesh" id="BoxMesh_sl2e5"]
 size = Vector3(40, 2, 40)
+
+[sub_resource type="SphereMesh" id="SphereMesh_v5dby"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_6m72w"]
+size = Vector3(20, 20, 2)
+
+[sub_resource type="BoxMesh" id="BoxMesh_v5dby"]
+size = Vector3(20, 20, 2)
 
 [node name="World" type="Node"]
 script = ExtResource("1_f3sb7")
@@ -32,14 +42,36 @@ text = "Copy Connection String"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
-shape = SubResource("BoxShape3D_dphjl")
+shape = SubResource("BoxShape3D_1fp7r")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
 mesh = SubResource("BoxMesh_sl2e5")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 20, 0)
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 29, 0)
 shadow_enabled = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6827354, -8.356096)
+mesh = SubResource("SphereMesh_v5dby")
+skeleton = NodePath("")
+
+[node name="RaytracedAudioPlayer3D" type="AudioStreamPlayer3D" parent="MeshInstance3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.058775, 0)
+stream = ExtResource("2_1fp7r")
+volume_db = -24.698
+autoplay = true
+script = ExtResource("3_6m72w")
+metadata/_custom_type_script = "uid://dkb8ltjc6067n"
+
+[node name="StaticBody3D2" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, -4)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D2"]
+shape = SubResource("BoxShape3D_6m72w")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D2"]
+mesh = SubResource("BoxMesh_v5dby")
 
 [connection signal="pressed" from="HBoxContainer/LeaveButton" to="." method="_on_leave_button_pressed"]
 [connection signal="pressed" from="HBoxContainer/CopyConnectionStringButton" to="." method="_on_copy_connection_string_button_pressed"]
