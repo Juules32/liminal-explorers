@@ -13,8 +13,6 @@ func create_lobby(_lobby_name: String) -> void:
 	NetworkManager.connect_peer_to_lobby(1)
 
 func join_lobby(_lobby_id: Variant) -> Error:
-	print("Player 2 joining")
-	
 	var error: Error = peer.create_client(SERVER_IP, SERVER_PORT)
 	
 	if error == OK:

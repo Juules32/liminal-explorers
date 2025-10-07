@@ -1,6 +1,8 @@
 class_name AudioManager
 extends Node3D
 
+const SHOULD_RECORD: bool = false
+
 var bus_index: int = 0
 var effect: AudioEffectCapture
 var playback: AudioStreamGeneratorPlayback
@@ -10,6 +12,7 @@ var playback: AudioStreamGeneratorPlayback
 @export var input_threshold: float = 0.005
 var receive_buffer: PackedFloat32Array = PackedFloat32Array()
 
+# NOTE: Exceeding the packet limit causes iroh disconnect!
 const MAX_FRAMES_PER_PACKET: int = 512
 
 func _ready() -> void:
@@ -18,6 +21,8 @@ func _ready() -> void:
 	playback = mic_output.get_stream_playback()
 
 func _process(_delta: float) -> void:
+	if not SHOULD_RECORD:
+		return
 	
 	# NOTE: USEFUL ONLY FOR DEBUGGING. IN PRODUCTION, CLIENTS SHOULD BE ABLE TO SPEAK
 	#if not multiplayer.is_server():

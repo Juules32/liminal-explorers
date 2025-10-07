@@ -41,7 +41,6 @@ func _process(_delta: float) -> void:
 
 func create_lobby(new_lobby_name: String) -> void:
 	print("Creating lobby...")
-	print(multiplayer)
 	if new_lobby_name:
 		lobby_name = new_lobby_name
 
