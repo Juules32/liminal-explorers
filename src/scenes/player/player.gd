@@ -16,6 +16,7 @@ extends CharacterBody3D
 const SPEED: float = 14.0
 
 func _ready() -> void:
+	print(multiplayer.get_meta_list())
 	if multiplayer.get_unique_id() == id:
 		camera.make_current()
 		raytraced_audio_listener.make_current()
