@@ -18,8 +18,10 @@ func _ready() -> void:
 		_position_window_right()
 	if "--host-local" in args:
 		auto_host_local = true
+		get_window().title = "Server"
 	if "--join-local" in args:
 		auto_join_local = true
+		get_window().title = "Client"
 
 
 func _position_window_left() -> void:

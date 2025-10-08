@@ -10,13 +10,10 @@ var playback: AudioStreamGeneratorPlayback
 @onready var is_e_net: bool = multiplayer.multiplayer_peer is ENetMultiplayerPeer
 
 @export var input_threshold: float = 0.005
-var receive_buffer: PackedFloat32Array = PackedFloat32Array()
-
+var receive_buffer: PackedByteArray = PackedByteArray()
 
 var current_sample_rate: int = 48000
-var network_voice_buffer: PackedByteArray = PackedByteArray()
 var packet_read_limit: int = 5
-var active: bool = false
 
 
 
@@ -41,8 +38,8 @@ func _process(_delta: float) -> void:
 	
 	if is_e_net:
 		# NOTE: USEFUL ONLY FOR DEBUGGING. IN PRODUCTION, CLIENTS SHOULD BE ABLE TO SPEAK
-		#if not multiplayer.is_server():
-		#	return
+		if not multiplayer.is_server():
+			return
 
 		if effect.can_get_buffer(MAX_FRAMES_PER_PACKET) and playback.can_push_buffer(MAX_FRAMES_PER_PACKET):
 			send_data_local.rpc(effect.get_buffer(MAX_FRAMES_PER_PACKET))
@@ -76,24 +73,24 @@ func get_sample_rate() -> void:
 	current_sample_rate = Steam.getVoiceOptimalSampleRate()
 	print("Current sample rate: %s" % current_sample_rate)
 
-@rpc("any_peer", "call_local", "unreliable")
+@rpc("any_peer", "call_remote", "unreliable")
 func send_data_steam(voice_data: Dictionary) -> void:
 	var decompressed_voice: Dictionary = Steam.decompressVoice(voice_data['buffer'], current_sample_rate)
 
 	if decompressed_voice['result'] == Steam.VOICE_RESULT_OK and decompressed_voice['size'] > 0:
 		print("Decompressed voice: %s" % decompressed_voice['size'])
 
-		network_voice_buffer = decompressed_voice['uncompressed']
-		network_voice_buffer.resize(decompressed_voice['size'])
+		receive_buffer = decompressed_voice['uncompressed']
+		receive_buffer.resize(decompressed_voice['size'])
 
 		# We now iterate through the local_voice_buffer and push the samples to the audio generator
 		for i: int in playback.get_frames_available():
 			# Steam's audio data is represented as 16-bit single channel PCM audio, so we need to convert it to amplitudes
 			# Combine the low and high bits to get full 16-bit value
-			if network_voice_buffer.is_empty():
+			if receive_buffer.is_empty():
 				break
 			 
-			var raw_value: int = network_voice_buffer[0] | (network_voice_buffer[1] << 8)
+			var raw_value: int = receive_buffer[0] | (receive_buffer[1] << 8)
 			# Make it a 16-bit signed integer
 			raw_value = (raw_value + 32768) & 0xffff
 			# Convert the 16-bit integer to a float on from -1 to 1
@@ -103,8 +100,8 @@ func send_data_steam(voice_data: Dictionary) -> void:
 			playback.push_frame(Vector2(amplitude, amplitude))
 
 			# Delete the used samples
-			network_voice_buffer.remove_at(0)
-			network_voice_buffer.remove_at(0)
+			receive_buffer.remove_at(0)
+			receive_buffer.remove_at(0)
 
 func record_voice(is_recording: bool) -> void:
 	# If talking, suppress all other audio or voice comms from the Steam UI
