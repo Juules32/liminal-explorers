@@ -1,0 +1,24 @@
+[gd_scene load_steps=5 format=3 uid="uid://cd36hwxmnc55j"]
+
+[ext_resource type="Script" uid="uid://0k7wtmedfqfp" path="res://scenes/player/audio_manager.gd" id="1_ljtaw"]
+[ext_resource type="Script" uid="uid://dkb8ltjc6067n" path="res://addons/raytraced_audio/raytraced_audio_player_3d.gd" id="2_ndjf3"]
+
+[sub_resource type="AudioStreamGenerator" id="AudioStreamGenerator_lvxji"]
+mix_rate = 48000.0
+
+[sub_resource type="AudioStreamMicrophone" id="AudioStreamMicrophone_lvxji"]
+
+[node name="AudioManager" type="Node3D"]
+script = ExtResource("1_ljtaw")
+
+[node name="MicOutput" type="AudioStreamPlayer3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2293215, 0)
+stream = SubResource("AudioStreamGenerator_lvxji")
+autoplay = true
+script = ExtResource("2_ndjf3")
+metadata/_custom_type_script = "uid://dkb8ltjc6067n"
+
+[node name="MicInput" type="AudioStreamPlayer" parent="."]
+stream = SubResource("AudioStreamMicrophone_lvxji")
+autoplay = true
+bus = &"Record"

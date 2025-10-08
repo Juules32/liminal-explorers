@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://da7or5lkikcgw"]
+
+[ext_resource type="Script" uid="uid://cvk1vkrs3rcga" path="res://globals/steam_voip.gd" id="1_qlmnp"]
+
+[sub_resource type="AudioStreamGenerator" id="AudioStreamGenerator_qlmnp"]
+
+[sub_resource type="AudioStreamGenerator" id="AudioStreamGenerator_scl70"]
+
+[node name="SteamVoip" type="Node"]
+script = ExtResource("1_qlmnp")
+
+[node name="Local" type="AudioStreamPlayer" parent="."]
+stream = SubResource("AudioStreamGenerator_qlmnp")
+
+[node name="Network" type="AudioStreamPlayer" parent="."]
+stream = SubResource("AudioStreamGenerator_scl70")
