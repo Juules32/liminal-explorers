@@ -20,7 +20,9 @@ func _ready() -> void:
 	if multiplayer.get_unique_id() == id:
 		camera.make_current()
 		raytraced_audio_listener.make_current()
-
+	else:
+		# Disable non-local listeners
+		raytraced_audio_listener.is_enabled = false
 
 func _physics_process(delta: float) -> void:
 	if multiplayer.is_server():
