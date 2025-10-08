@@ -16,14 +16,20 @@ properties/1/replication_mode = 1
 properties/2/path = NodePath(".:id")
 properties/2/spawn = true
 properties/2/replication_mode = 1
+properties/3/path = NodePath(".:rotation")
+properties/3/spawn = true
+properties/3/replication_mode = 1
+properties/4/path = NodePath("CameraPivot/Camera:rotation")
+properties/4/spawn = true
+properties/4/replication_mode = 1
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_gmlin"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_onrkg"]
-properties/0/path = NodePath("InputSynchronizer:axis_x")
+properties/0/path = NodePath("InputSynchronizer:rotation")
 properties/0/spawn = true
 properties/0/replication_mode = 1
-properties/1/path = NodePath("InputSynchronizer:axis_y")
+properties/1/path = NodePath("InputSynchronizer:direction")
 properties/1/spawn = true
 properties/1/replication_mode = 1
 
@@ -47,10 +53,10 @@ transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.3, 0)
 [node name="PlayerModel" parent="Pivot" instance=ExtResource("4_p47bc")]
 
 [node name="CameraPivot" type="Marker3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.70710677, 0.70710677, 0, -0.70710677, 0.70710677, 0, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 0.98480767, 0.17364816, 0, -0.17364816, 0.98480767, 0, 0, 0)
 
 [node name="Camera" type="Camera3D" parent="CameraPivot"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 3)
 
 [node name="RaytracedAudioListener" type="AudioListener3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1735692, 0)
@@ -64,3 +70,4 @@ replication_config = SubResource("SceneReplicationConfig_onrkg")
 script = ExtResource("3_i3pqv")
 
 [node name="AudioManager" parent="AuthorityNode" instance=ExtResource("5_p47bc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)

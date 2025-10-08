@@ -24,7 +24,6 @@ driver/enable_input=true
 
 LaunchArgumentParser="*res://globals/launch_argument_parser.gd"
 NetworkManager="*res://globals/network_manager.gd"
-SteamVoip="res://globals/steam_voip.tscn"
 
 [debug]
 

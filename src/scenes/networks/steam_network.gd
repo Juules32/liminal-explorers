@@ -10,6 +10,7 @@ var steam_id: int = 0
 var steam_username: String = ""
 var lobby_name: String = "Unnamed Lobby"
 
+
 func _init() -> void:
 	print("Init Steam")
 	OS.set_environment("SteamAppId", str(STEAM_APP_ID))
@@ -32,24 +33,33 @@ func _init() -> void:
 		print("User does not own game!")
 		init_error = ERR_UNAUTHORIZED
 
+
 func _ready() -> void:
 	Steam.lobby_created.connect(_on_lobby_created)
 	Steam.lobby_joined.connect(_on_lobby_joined)
 
+
 func _process(_delta: float) -> void:
 	Steam.run_callbacks()
+
 
 func create_lobby(new_lobby_name: String) -> void:
 	print("Creating lobby...")
 	if new_lobby_name:
 		lobby_name = new_lobby_name
-
 	Steam.createLobby(Steam.LOBBY_TYPE_PUBLIC, MAX_MEMBERS)
+
 
 func join_lobby(lobby_id: Variant) -> Error:
 	print("Joining lobby ", lobby_id)
 	Steam.joinLobby(lobby_id)
 	return OK
+
+
+func open_lobby_list() -> void:
+	Steam.addRequestLobbyListDistanceFilter(Steam.LOBBY_DISTANCE_FILTER_WORLDWIDE)
+	Steam.requestLobbyList()
+
 
 func _on_lobby_created(foo: int, lobby_id: int) -> void:
 	print("On lobby created")
@@ -70,7 +80,6 @@ func _on_lobby_created(foo: int, lobby_id: int) -> void:
 
 func _on_lobby_joined(lobby: int, _permissions: int, _locked: bool, response: int) -> void:
 	print("On lobby joined: ", response)
-	
 	if response == 1:
 		var lobby_owner_id: int = Steam.getLobbyOwner(lobby)
 		if lobby_owner_id != Steam.getSteamID():
@@ -93,7 +102,3 @@ func _on_lobby_joined(lobby: int, _permissions: int, _locked: bool, response: in
 			9:  print("This lobby is community locked.")
 			10: print("A user in the lobby has blocked you from joining.")
 			11: print("A user you have blocked is in the lobby.")
-
-func open_lobby_list() -> void:
-	Steam.addRequestLobbyListDistanceFilter(Steam.LOBBY_DISTANCE_FILTER_WORLDWIDE)
-	Steam.requestLobbyList()
