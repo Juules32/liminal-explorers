@@ -21,8 +21,8 @@ func _ready() -> void:
 		camera.make_current()
 		raytraced_audio_listener.make_current()
 	else:
-		# Disable non-local listeners
-		raytraced_audio_listener.is_enabled = false
+		# Remove listeners on players not controlled by this device
+		raytraced_audio_listener.queue_free()
 
 func _physics_process(delta: float) -> void:
 	if multiplayer.is_server():
