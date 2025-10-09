@@ -13,10 +13,11 @@ config_version=5
 config/name="Multiplayer Prototype"
 run/main_scene="uid://ccwv7spcesi2x"
 config/features=PackedStringArray("4.5", "GL Compatibility")
-config/icon="res://icon.svg"
+config/icon="res://assets/sprites/icon.svg"
 
 [audio]
 
+buses/default_bus_layout="res://resources/default_bus_layout.tres"
 general/3d_panning_strength=1.0
 driver/enable_input=true
 
@@ -34,6 +35,18 @@ gdscript/warnings/integer_division=0
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/raytraced_audio/plugin.cfg")
+
+[file_customization]
+
+folder_colors={
+"res://addons/": "gray",
+"res://assets/": "red",
+"res://dialogue/": "orange",
+"res://globals/": "yellow",
+"res://resource_scripts/": "blue",
+"res://resources/": "green",
+"res://scenes/": "purple"
+}
 
 [input]
 
