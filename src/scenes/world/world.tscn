@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=3 uid="uid://5s7e8m6rcial"]
 
 [ext_resource type="Script" uid="uid://dnpos742jnngb" path="res://scenes/world/world.gd" id="1_f3sb7"]
-[ext_resource type="AudioStream" uid="uid://c5qpnfga41t4p" path="res://art/House In a Forest Loop.ogg" id="2_1fp7r"]
+[ext_resource type="AudioStream" uid="uid://c5qpnfga41t4p" path="res://assets/music/house_in_a_forest.ogg" id="2_1fp7r"]
 [ext_resource type="Script" uid="uid://dkb8ltjc6067n" path="res://addons/raytraced_audio/raytraced_audio_player_3d.gd" id="3_6m72w"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_1fp7r"]

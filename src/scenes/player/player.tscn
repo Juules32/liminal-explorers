@@ -1,37 +1,37 @@
-[gd_scene load_steps=12 format=3 uid="uid://c4qhceyy2snhx"]
+[gd_scene load_steps=9 format=3 uid="uid://c4qhceyy2snhx"]
 
 [ext_resource type="Script" uid="uid://bxfkpkbtlmudh" path="res://scenes/player/player.gd" id="1_onrkg"]
 [ext_resource type="Script" uid="uid://bdc7mavnntq5l" path="res://scenes/player/input_synchronizer.gd" id="3_i3pqv"]
-[ext_resource type="Script" uid="uid://dkb8ltjc6067n" path="res://addons/raytraced_audio/raytraced_audio_player_3d.gd" id="4_75vfm"]
-[ext_resource type="Script" uid="uid://0k7wtmedfqfp" path="res://scenes/player/audio_manager.gd" id="4_lvxji"]
-[ext_resource type="PackedScene" uid="uid://d0ypm0v45pwdv" path="res://art/player.glb" id="4_p47bc"]
+[ext_resource type="PackedScene" uid="uid://d0ypm0v45pwdv" path="res://assets/models/player.glb" id="4_p47bc"]
+[ext_resource type="PackedScene" uid="uid://cd36hwxmnc55j" path="res://scenes/player/audio_manager.tscn" id="5_p47bc"]
 [ext_resource type="Script" uid="uid://bjpmu5sklv5h8" path="res://addons/raytraced_audio/raytraced_audio_listener.gd" id="6_0owmy"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_sweqy"]
 properties/0/path = NodePath(".:position")
 properties/0/spawn = true
 properties/0/replication_mode = 1
-properties/1/path = NodePath(".:player_id")
+properties/1/path = NodePath("Label:text")
 properties/1/spawn = true
 properties/1/replication_mode = 1
-properties/2/path = NodePath("Label:text")
+properties/2/path = NodePath(".:id")
 properties/2/spawn = true
 properties/2/replication_mode = 1
-
-[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_onrkg"]
-properties/0/path = NodePath("InputSynchronizer:axis_x")
-properties/0/spawn = true
-properties/0/replication_mode = 1
-properties/1/path = NodePath("InputSynchronizer:axis_y")
-properties/1/spawn = true
-properties/1/replication_mode = 1
-
-[sub_resource type="AudioStreamGenerator" id="AudioStreamGenerator_lvxji"]
-mix_rate = 48000.0
-
-[sub_resource type="AudioStreamMicrophone" id="AudioStreamMicrophone_lvxji"]
+properties/3/path = NodePath(".:rotation")
+properties/3/spawn = true
+properties/3/replication_mode = 1
+properties/4/path = NodePath("CameraPivot/Camera:rotation")
+properties/4/spawn = true
+properties/4/replication_mode = 1
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_gmlin"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_onrkg"]
+properties/0/path = NodePath("InputSynchronizer:rotation")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath("InputSynchronizer:direction")
+properties/1/spawn = true
+properties/1/replication_mode = 1
 
 [node name="Player" type="CharacterBody3D"]
 script = ExtResource("1_onrkg")
@@ -43,28 +43,7 @@ replication_config = SubResource("SceneReplicationConfig_sweqy")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0758379, 0)
 text = "Test"
 
-[node name="InputSynchronizer" type="MultiplayerSynchronizer" parent="."]
-unique_name_in_owner = true
-replication_config = SubResource("SceneReplicationConfig_onrkg")
-script = ExtResource("3_i3pqv")
-
-[node name="AudioManager" type="Node3D" parent="."]
-unique_name_in_owner = true
-script = ExtResource("4_lvxji")
-
-[node name="MicOutput" type="AudioStreamPlayer3D" parent="AudioManager"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2293215, 0)
-stream = SubResource("AudioStreamGenerator_lvxji")
-autoplay = true
-script = ExtResource("4_75vfm")
-metadata/_custom_type_script = "uid://dkb8ltjc6067n"
-
-[node name="MicInput" type="AudioStreamPlayer" parent="AudioManager"]
-stream = SubResource("AudioStreamMicrophone_lvxji")
-autoplay = true
-bus = &"Record"
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+[node name="CollisionShape" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 shape = SubResource("SphereShape3D_gmlin")
 
@@ -74,12 +53,21 @@ transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.3, 0)
 [node name="PlayerModel" parent="Pivot" instance=ExtResource("4_p47bc")]
 
 [node name="CameraPivot" type="Marker3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.70710677, 0.70710677, 0, -0.70710677, 0.70710677, 0, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 0.98480767, 0.17364816, 0, -0.17364816, 0.98480767, 0, 0, 0)
 
-[node name="Camera3D" type="Camera3D" parent="CameraPivot"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5)
+[node name="Camera" type="Camera3D" parent="CameraPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 3)
 
-[node name="AudioListener3D" type="AudioListener3D" parent="."]
+[node name="RaytracedAudioListener" type="AudioListener3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1735692, 0)
 script = ExtResource("6_0owmy")
 metadata/_custom_type_script = "uid://bjpmu5sklv5h8"
+
+[node name="AuthorityNode" type="Node3D" parent="."]
+
+[node name="InputSynchronizer" type="MultiplayerSynchronizer" parent="AuthorityNode"]
+replication_config = SubResource("SceneReplicationConfig_onrkg")
+script = ExtResource("3_i3pqv")
+
+[node name="AudioManager" parent="AuthorityNode" instance=ExtResource("5_p47bc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)

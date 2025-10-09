@@ -9,7 +9,7 @@ const IROH_NETWORK: Resource = preload("uid://d3xag4pw71grj")
 
 var active_network_type: NetworkType = NetworkType.ENET
 var active_network: AbstractNetwork
-
+var player_ids: Array[int] = []
 
 func _ready() -> void:
 	multiplayer.peer_connected.connect(_on_peer_connected)
@@ -17,6 +17,33 @@ func _ready() -> void:
 	multiplayer.connected_to_server.connect(_on_connected_to_server)
 	multiplayer.server_disconnected.connect(_on_server_disconnected)
 	multiplayer.connection_failed.connect(_on_connection_failed)
+
+
+func create_lobby(lobby_name: String = "") -> Error:
+	var error: Error = build_multiplayer_network()
+	
+	if error == OK:
+		active_network.create_lobby(lobby_name)
+	
+	return error
+
+
+func join_lobby(lobby_id: Variant = 0) -> Error:
+	var error: Error = build_multiplayer_network()
+	
+	if error == OK:
+		var join_error: Error = active_network.join_lobby(lobby_id)
+		return join_error
+	else:
+		return error
+
+
+func open_lobby_list() -> Error:
+	if active_network and Steam.isSteamRunning():
+		active_network.open_lobby_list()
+		return OK
+	
+	return ERR_CANT_CONNECT
 
 
 func build_multiplayer_network() -> Error:
@@ -35,43 +62,15 @@ func build_multiplayer_network() -> Error:
 	return ERR_CANT_CREATE
 
 
-func create_lobby(lobby_name: String = "") -> Error:
-	var error: Error = build_multiplayer_network()
-	
-	if error == OK:
-		active_network.create_lobby(lobby_name)
-	
-	return error
-
-
-func join_lobby(lobby_id: Variant = 0) -> Error:
-	var error: Error = build_multiplayer_network()
-	print(error)
-	
-	if error == OK:
-		var join_error: Error = active_network.join_lobby(lobby_id)
-		return join_error
-	else:
-		return error
-
-
-func open_lobby_list() -> Error:
-	if active_network and Steam.isSteamRunning():
-		active_network.open_lobby_list()
-		return OK
-	
-	return ERR_CANT_CONNECT
-
-
 func connect_peer_to_lobby(peer_id: int) -> void:
 	if multiplayer.is_server():
 		print("Peer ", peer_id, " joined the game!")
-		var unique_id: int = multiplayer.get_remote_sender_id()
+		player_ids.append(peer_id)
 		var player_instance: Player = PLAYER.instantiate()
-		player_instance.player_id = peer_id
+		player_instance.id = peer_id
 		player_instance.name = str(peer_id)
+		player_instance.position = Vector3(player_ids.find(peer_id) * 2, 0, 0)
 		get_node("/root/Game/World").add_child(player_instance)
-
 
 # TODO: Make this work as intended
 func disconnect_peer_from_lobby(peer_id: int) -> void:
