@@ -70,7 +70,9 @@ func connect_peer_to_lobby(peer_id: int) -> void:
 		player_instance.id = peer_id
 		player_instance.name = str(peer_id)
 		player_instance.position = Vector3(player_ids.find(peer_id) * 2, 0, 0)
-		get_node("/root/Game/World").add_child(player_instance)
+		var world: World = get_node("/root/Game/World")
+		world.add_child(player_instance)
+
 
 # TODO: Make this work as intended
 func disconnect_peer_from_lobby(peer_id: int) -> void:

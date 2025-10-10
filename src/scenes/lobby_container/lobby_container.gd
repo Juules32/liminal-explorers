@@ -8,6 +8,7 @@ const STEAM_LOBBY_ENTRY: Resource = preload("uid://bpombmlv0o6ts")
 @onready var lobby_name_line_edit: LineEdit = $TabContainer/Steam/MarginContainer/VBoxContainer/HBoxContainer/LobbyNameLineEdit
 @onready var steam_running_label: RichTextLabel = $TabContainer/Steam/MarginContainer/VBoxContainer/HBoxContainer/SteamRunningLabel
 @onready var connection_string_line_edit: LineEdit = $TabContainer/Iroh/MarginContainer/VBoxContainer/HBoxContainer/ConnectionStringLineEdit
+@onready var address_line_edit: LineEdit = $TabContainer/Local/MarginContainer/VBoxContainer/HBoxContainer/AddressLineEdit
 
 func _ready() -> void:
 	Steam.lobby_match_list.connect(_on_lobby_match_list)
@@ -23,7 +24,7 @@ func _on_e_net_host_button_pressed() -> void:
 
 
 func _on_e_net_join_button_pressed() -> void:
-	NetworkManager.join_lobby()
+	NetworkManager.join_lobby(address_line_edit.text)
 	hide()
 
 

@@ -36,7 +36,16 @@ layout_mode = 2
 size_flags_horizontal = 0
 text = "Create Local Lobby"
 
-[node name="ENetJoinButton" type="Button" parent="TabContainer/Local/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="TabContainer/Local/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="AddressLineEdit" type="LineEdit" parent="TabContainer/Local/MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "localhost"
+placeholder_text = "Address"
+
+[node name="ENetJoinButton" type="Button" parent="TabContainer/Local/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
 text = "Join Local Lobby"
@@ -143,7 +152,7 @@ autostart = true
 
 [connection signal="tab_changed" from="TabContainer" to="." method="_on_tab_container_tab_changed"]
 [connection signal="pressed" from="TabContainer/Local/MarginContainer/VBoxContainer/ENetHostButton" to="." method="_on_e_net_host_button_pressed"]
-[connection signal="pressed" from="TabContainer/Local/MarginContainer/VBoxContainer/ENetJoinButton" to="." method="_on_e_net_join_button_pressed"]
+[connection signal="pressed" from="TabContainer/Local/MarginContainer/VBoxContainer/HBoxContainer/ENetJoinButton" to="." method="_on_e_net_join_button_pressed"]
 [connection signal="pressed" from="TabContainer/Steam/MarginContainer/VBoxContainer/HBoxContainer/SteamHostButton" to="." method="_on_steam_host_button_pressed"]
 [connection signal="pressed" from="TabContainer/Iroh/MarginContainer/VBoxContainer/IrohHostButton" to="." method="_on_iroh_host_button_pressed"]
 [connection signal="pressed" from="TabContainer/Iroh/MarginContainer/VBoxContainer/HBoxContainer/IrohJoinButton" to="." method="_on_iroh_join_button_pressed"]

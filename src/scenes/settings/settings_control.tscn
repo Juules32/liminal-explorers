@@ -1,0 +1,39 @@
+[gd_scene load_steps=2 format=3 uid="uid://chie1d77f55vv"]
+
+[ext_resource type="Script" uid="uid://dy3u6qyaiaoqc" path="res://scenes/settings/settings_control.gd" id="1_ri2bj"]
+
+[node name="SettingsControl" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 640.0
+offset_bottom = 360.0
+script = ExtResource("1_ri2bj")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.1764706, 0.13333334, 0.21568628, 0.65882355)
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer"]
+use_parent_material = true
+layout_mode = 2
+
+[node name="LeaveButton" type="Button" parent="CenterContainer/HBoxContainer"]
+layout_mode = 2
+text = "Leave"
+
+[node name="CopyConnectionStringButton" type="Button" parent="CenterContainer/HBoxContainer"]
+layout_mode = 2
+text = "Copy Connection String"

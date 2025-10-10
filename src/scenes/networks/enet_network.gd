@@ -1,8 +1,7 @@
 class_name ENetNetwork
 extends AbstractNetwork
 
-const SERVER_IP: String = "localhost"
-const SERVER_PORT: int = 8080
+const SERVER_PORT: int = 54545
 
 var peer: ENetMultiplayerPeer = ENetMultiplayerPeer.new()
 
@@ -12,8 +11,8 @@ func create_lobby(_lobby_name: String) -> void:
 	NetworkManager.connect_peer_to_lobby(1)
 
 
-func join_lobby(_lobby_id: Variant) -> Error:
-	var error: Error = peer.create_client(SERVER_IP, SERVER_PORT)
+func join_lobby(lobby_id: Variant) -> Error:
+	var error: Error = peer.create_client(lobby_id, SERVER_PORT)
 	
 	if error == OK:
 		multiplayer.multiplayer_peer = peer

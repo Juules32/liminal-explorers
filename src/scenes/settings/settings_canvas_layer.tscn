@@ -1,0 +1,21 @@
+[gd_scene load_steps=5 format=3 uid="uid://b1ql3sxe3b0pb"]
+
+[ext_resource type="Script" uid="uid://bpyapmkvtqeba" path="res://scenes/settings/settings_canvas_layer.gd" id="1_itdlw"]
+[ext_resource type="Shader" uid="uid://c0hhjvbi1al7m" path="res://shaders/settings_transition.gdshader" id="2_mlakj"]
+[ext_resource type="PackedScene" uid="uid://chie1d77f55vv" path="res://scenes/settings/settings_control.tscn" id="3_sx3om"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_38gfh"]
+shader = ExtResource("2_mlakj")
+shader_parameter/progress = 0.0
+shader_parameter/diamond_pixel_size = 20.0000009025
+shader_parameter/softness = 0.1
+
+[node name="SettingsCanvasLayer" type="CanvasLayer"]
+script = ExtResource("1_itdlw")
+
+[node name="CanvasGroup" type="CanvasGroup" parent="."]
+material = SubResource("ShaderMaterial_38gfh")
+fit_margin = 0.0
+clear_margin = 0.0
+
+[node name="SettingsControl" parent="CanvasGroup" instance=ExtResource("3_sx3om")]

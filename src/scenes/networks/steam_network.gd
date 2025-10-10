@@ -61,9 +61,9 @@ func open_lobby_list() -> void:
 	Steam.requestLobbyList()
 
 
-func _on_lobby_created(foo: int, lobby_id: int) -> void:
+func _on_lobby_created(status: int, lobby_id: int) -> void:
 	print("On lobby created")
-	if foo == 1:
+	if status == 1:
 		print("Created lobby ", lobby_id)
 		hosted_lobby_id = lobby_id
 		
