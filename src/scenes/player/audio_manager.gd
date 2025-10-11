@@ -36,7 +36,8 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	if is_e_net:
 		if effect.can_get_buffer(MAX_FRAMES_PER_PACKET) and playback.can_push_buffer(MAX_FRAMES_PER_PACKET):
-			send_voice_data_local.rpc(effect.get_buffer(MAX_FRAMES_PER_PACKET))
+			if NetworkManager.in_lobby():
+				send_voice_data_local.rpc(effect.get_buffer(MAX_FRAMES_PER_PACKET))
 		effect.clear_buffer()
 	elif is_steam:
 		var available_voice: Dictionary = Steam.getAvailableVoice()

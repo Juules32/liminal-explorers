@@ -27,7 +27,6 @@ func _ready() -> void:
 	else:
 		# Remove listeners on players not controlled by this device
 		raytraced_audio_listener.queue_free()
-	
 	if not multiplayer.is_server():
 		set_physics_process(false)
 

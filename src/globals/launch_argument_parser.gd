@@ -26,11 +26,11 @@ func _ready() -> void:
 
 func _position_window_left() -> void:
 	DisplayServer.window_set_position(_primary_screen_position)
-	DisplayServer.window_set_size(_primary_screen_half_size)
+	DisplayServer.window_set_size(Vector2(960, 540))
 
 
 func _position_window_right() -> void:
 	DisplayServer.window_set_position(
 		_primary_screen_position + Vector2i(_primary_screen_half_size.x, 0)
 	)
-	DisplayServer.window_set_size(_primary_screen_half_size)
+	DisplayServer.window_set_size(Vector2(960, 540))

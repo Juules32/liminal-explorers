@@ -14,4 +14,4 @@ func _on_leave_button_pressed() -> void:
 func _on_copy_connection_string_button_pressed() -> void:
 	if multiplayer.multiplayer_peer is IrohServer:
 		DisplayServer.clipboard_set(multiplayer.multiplayer_peer.connection_string())
-		print("Copied connection string: " + multiplayer.multiplayer_peer.connection_string())
+		W.print("Copied connection string: " + multiplayer.multiplayer_peer.connection_string())

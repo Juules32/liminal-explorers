@@ -1,3 +1,5 @@
+
+
 shader_type canvas_item;
 
 // Declare the group’s drawn texture explicitly

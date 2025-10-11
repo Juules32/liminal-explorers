@@ -26,7 +26,7 @@ func _input(event: InputEvent) -> void:
 func _update_mouse_mode() -> void:
 	if target_visible:
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-	else:
+	elif NetworkManager.in_lobby():
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
 

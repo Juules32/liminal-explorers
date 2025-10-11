@@ -1,6 +1,14 @@
-[gd_scene load_steps=2 format=3 uid="uid://chie1d77f55vv"]
+[gd_scene load_steps=4 format=3 uid="uid://chie1d77f55vv"]
 
 [ext_resource type="Script" uid="uid://dy3u6qyaiaoqc" path="res://scenes/settings/settings_control.gd" id="1_ri2bj"]
+[ext_resource type="Shader" uid="uid://beis2y1rydv61" path="res://shaders/abstract_3d.gdshader" id="2_smc2x"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_uhxcu"]
+shader = ExtResource("2_smc2x")
+shader_parameter/movement_speed = 0.0
+shader_parameter/movement_scale = 2.0
+shader_parameter/color_1 = Color(0, 0.63, 0.49, 1)
+shader_parameter/color_2 = Color(0.16, 0.16, 0.16, 1)
 
 [node name="SettingsControl" type="Control"]
 layout_mode = 3
@@ -10,13 +18,13 @@ offset_bottom = 360.0
 script = ExtResource("1_ri2bj")
 
 [node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_uhxcu")
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.1764706, 0.13333334, 0.21568628, 0.65882355)
 
 [node name="CenterContainer" type="CenterContainer" parent="."]
 layout_mode = 1
@@ -37,3 +45,6 @@ text = "Leave"
 [node name="CopyConnectionStringButton" type="Button" parent="CenterContainer/HBoxContainer"]
 layout_mode = 2
 text = "Copy Connection String"
+
+[connection signal="pressed" from="CenterContainer/HBoxContainer/LeaveButton" to="." method="_on_leave_button_pressed"]
+[connection signal="pressed" from="CenterContainer/HBoxContainer/CopyConnectionStringButton" to="." method="_on_copy_connection_string_button_pressed"]

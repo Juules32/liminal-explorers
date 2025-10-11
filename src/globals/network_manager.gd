@@ -1,5 +1,6 @@
 extends Node
 
+
 enum NetworkType { ENET, STEAM, IROH }
 
 const PLAYER: Resource = preload("uid://c4qhceyy2snhx")
@@ -11,6 +12,7 @@ var active_network_type: NetworkType = NetworkType.ENET
 var active_network: AbstractNetwork
 var player_ids: Array[int] = []
 
+
 func _ready() -> void:
 	multiplayer.peer_connected.connect(_on_peer_connected)
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
@@ -18,6 +20,9 @@ func _ready() -> void:
 	multiplayer.server_disconnected.connect(_on_server_disconnected)
 	multiplayer.connection_failed.connect(_on_connection_failed)
 
+
+func in_lobby() -> bool:
+	return multiplayer.multiplayer_peer.get_connection_status() == MultiplayerPeer.ConnectionStatus.CONNECTION_CONNECTED
 
 func create_lobby(lobby_name: String = "") -> Error:
 	var error: Error = build_multiplayer_network()
@@ -49,43 +54,38 @@ func open_lobby_list() -> Error:
 func build_multiplayer_network() -> Error:
 	match active_network_type:
 		NetworkType.ENET:
-			print("Setting network type to ENet")
+			W.print("Setting network type to ENet")
 			return _set_active_network(ENET_NETWORK)
 		NetworkType.STEAM:
-			print("Setting network type to Steam")
+			W.print("Setting network type to Steam")
 			return _set_active_network(STEAM_NETWORK)
 		NetworkType.IROH:
-			print("Setting network type to Iroh")
+			W.print("Setting network type to Iroh")
 			return _set_active_network(IROH_NETWORK)
 		_:
-			print("No match for network type!")
+			W.print("No match for network type!")
 	return ERR_CANT_CREATE
 
 
 func connect_peer_to_lobby(peer_id: int) -> void:
 	if multiplayer.is_server():
-		print("Peer ", peer_id, " joined the game!")
-		player_ids.append(peer_id)
+		W.print("Peer ", peer_id, " joined the game!")
 		var player_instance: Player = PLAYER.instantiate()
 		player_instance.id = peer_id
 		player_instance.name = str(peer_id)
-		player_instance.position = Vector3(player_ids.find(peer_id) * 2, 0, 0)
+		player_instance.position = Vector3(len(multiplayer.get_peers()) * 2, 0, 0)
 		var world: World = get_node("/root/Game/World")
 		world.add_child(player_instance)
 
 
-# TODO: Make this work as intended
 func disconnect_peer_from_lobby(peer_id: int) -> void:
 	var player_to_delete: Node = get_node("/root/Game/World").get_node(str(peer_id))
 	if player_to_delete:
-		print("Peer ", peer_id, " left the game!")
+		W.print("Peer ", peer_id, " left the game!")
 		player_to_delete.queue_free()
-	else:
-		print("Couldn't find peer: ", peer_id)
-	if peer_id == multiplayer.get_unique_id():
+	if peer_id == multiplayer.get_unique_id() or peer_id == 1:
 		(func() -> void: multiplayer.multiplayer_peer.close()).call_deferred()
-		multiplayer.peer_connected.disconnect(connect_peer_to_lobby)
-		multiplayer.peer_disconnected.disconnect(disconnect_peer_from_lobby)
+		get_tree().reload_current_scene()
 
 
 func _set_active_network(network_scene: Resource) -> Error:
@@ -114,12 +114,12 @@ func _on_peer_disconnected(peer_id: int) -> void:
 
 
 func _on_connected_to_server() -> void:
-	print("Client connected to server")
+	W.print("Client connected to server")
 
 
 func _on_server_disconnected() -> void:
-	print("Client disconnected from server")
+	W.print("Client disconnected from server")
 
 
 func _on_connection_failed() -> void:
-	print("Client failed to connect to server")
+	W.print("Client failed to connect to server")

@@ -10,11 +10,14 @@ const STEAM_LOBBY_ENTRY: Resource = preload("uid://bpombmlv0o6ts")
 @onready var connection_string_line_edit: LineEdit = $TabContainer/Iroh/MarginContainer/VBoxContainer/HBoxContainer/ConnectionStringLineEdit
 @onready var address_line_edit: LineEdit = $TabContainer/Local/MarginContainer/VBoxContainer/HBoxContainer/AddressLineEdit
 
+
 func _ready() -> void:
 	Steam.lobby_match_list.connect(_on_lobby_match_list)
 	if LaunchArgumentParser.auto_host_local:
+		LaunchArgumentParser.auto_host_local = false
 		_on_e_net_host_button_pressed()
 	elif LaunchArgumentParser.auto_join_local:
+		LaunchArgumentParser.auto_join_local = false
 		_on_e_net_join_button_pressed()
 
 
@@ -62,7 +65,7 @@ func _on_tab_container_tab_changed(tab: int) -> void:
 		if steam_running_label:
 			steam_running_label.hide()
 	NetworkManager.build_multiplayer_network()
-	print("Switched to: ", NetworkManager.active_network_type)
+	W.print("Switched to: ", NetworkManager.active_network_type)
 
 
 func _on_check_steam_running_timer_timeout() -> void:
