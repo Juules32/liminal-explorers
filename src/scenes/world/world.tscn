@@ -1,26 +1,21 @@
-[gd_scene load_steps=7 format=3 uid="uid://5s7e8m6rcial"]
+[gd_scene load_steps=6 format=3 uid="uid://5s7e8m6rcial"]
 
 [ext_resource type="Script" uid="uid://dnpos742jnngb" path="res://scenes/world/world.gd" id="1_f3sb7"]
 [ext_resource type="AudioStream" uid="uid://c5qpnfga41t4p" path="res://assets/music/house_in_a_forest.ogg" id="2_1fp7r"]
 [ext_resource type="Script" uid="uid://dkb8ltjc6067n" path="res://addons/raytraced_audio/raytraced_audio_player_3d.gd" id="3_6m72w"]
 [ext_resource type="PackedScene" uid="uid://cuugi5dtq6bay" path="res://scenes/world/carriage.tscn" id="4_6m72w"]
-[ext_resource type="Script" uid="uid://bewj0dmi1gtb3" path="res://scenes/world/visible_on_screen_notifier_3d.gd" id="6_t5ptc"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_v5dby"]
 
-[node name="World" type="Node"]
+[node name="World" type="Node" node_paths=PackedStringArray("main_carriage", "second_carriage")]
 script = ExtResource("1_f3sb7")
+main_carriage = NodePath("MainCarriage")
+second_carriage = NodePath("SecondCarriage")
 
 [node name="PlayerSpawner" type="MultiplayerSpawner" parent="."]
 _spawnable_scenes = PackedStringArray("uid://c4qhceyy2snhx")
 spawn_path = NodePath("..")
 spawn_limit = 10
-
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.4348539, 0.900501, 0, -0.900501, 0.4348539, 0, 29, 9.504017)
-light_indirect_energy = 6.664
-light_volumetric_fog_energy = 7.37
-shadow_enabled = true
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6827354, -8.356096)
@@ -35,17 +30,9 @@ autoplay = true
 script = ExtResource("3_6m72w")
 metadata/_custom_type_script = "uid://dkb8ltjc6067n"
 
-[node name="Carriage" parent="." instance=ExtResource("4_6m72w")]
+[node name="MainCarriage" parent="." instance=ExtResource("4_6m72w")]
 
-[node name="ButtonVisionTeleporter" type="VisibleOnScreenNotifier3D" parent="Carriage"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.8162746, 1.2077589, -0.6402836)
-aabb = AABB(-0.55008984, -0.48999202, -0.26526284, 0.92342186, 0.97998405, 0.5305257)
-script = ExtResource("6_t5ptc")
+[node name="SecondCarriage" parent="." instance=ExtResource("4_6m72w")]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 50, 0, 0)
 
-[node name="Carriage2" parent="." instance=ExtResource("4_6m72w")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 50)
-
-[connection signal="screen_entered" from="Carriage/ButtonVisionTeleporter" to="Carriage/ButtonVisionTeleporter" method="_on_screen_entered"]
-[connection signal="screen_exited" from="Carriage/ButtonVisionTeleporter" to="Carriage/ButtonVisionTeleporter" method="_on_screen_exited"]
-
-[editable path="Carriage"]
+[editable path="MainCarriage"]

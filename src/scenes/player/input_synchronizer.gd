@@ -2,7 +2,7 @@ class_name InputSynchronizer
 extends MultiplayerSynchronizer
 
 @export var direction: Vector2 = Vector2()
-@export var rotation: Vector2 = Vector2()
+@export var rotation: Vector3 = Vector3()
 var mouse_sensitivity: float = 0.002
 
 func _ready() -> void:

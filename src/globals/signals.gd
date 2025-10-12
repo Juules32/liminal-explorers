@@ -1,4 +1,4 @@
 extends Node
 
-signal move_to(new_position: Vector3)
-signal move(direction: Vector3)
+signal start_player_carriage_teleport
+signal move_player_carriage_teleport(main_carriage: Node3D, second_carriage: Node3D)

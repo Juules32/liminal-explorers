@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://cybl6rxxk3xhn"]
+
+[ext_resource type="Script" uid="uid://bewj0dmi1gtb3" path="res://scenes/world/visible_on_screen_notifier_3d.gd" id="1_nrpa5"]
+
+[node name="PlayerVisionTeleporter" type="VisibleOnScreenNotifier3D"]
+script = ExtResource("1_nrpa5")
+
+[connection signal="screen_entered" from="." to="." method="_on_screen_entered"]
+[connection signal="screen_exited" from="." to="." method="_on_screen_exited"]
