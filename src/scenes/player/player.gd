@@ -24,6 +24,7 @@ func _ready() -> void:
 		camera.make_current()
 		raytraced_audio_listener.make_current()
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+		Signals.move.connect(_on_move)
 	else:
 		# Remove listeners on players not controlled by this device
 		raytraced_audio_listener.queue_free()
@@ -45,3 +46,7 @@ func _physics_process(delta: float) -> void:
 
 	move_and_collide(velocity * delta)
 	label.text = str(velocity) + "\n" + str(id)
+
+
+func _on_move(direction: Vector3) -> void:
+	position += direction

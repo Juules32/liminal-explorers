@@ -1,0 +1,47 @@
+[gd_scene load_steps=7 format=3 uid="uid://cuugi5dtq6bay"]
+
+[ext_resource type="PackedScene" uid="uid://cujgcbnqlo8mh" path="res://assets/models/button.glb" id="1_j1d56"]
+[ext_resource type="Script" uid="uid://6011vpflvynj" path="res://scenes/world/carriage_hider.gd" id="2_4lkwt"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_hfdrg"]
+size = Vector3(40, 2, 40)
+
+[sub_resource type="BoxMesh" id="BoxMesh_lpqai"]
+size = Vector3(40, 2, 40)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ml6m7"]
+size = Vector3(20, 20, 2)
+
+[sub_resource type="BoxMesh" id="BoxMesh_fup6v"]
+size = Vector3(20, 20, 2)
+
+[node name="Carriage" type="Node3D"]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+shape = SubResource("BoxShape3D_hfdrg")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
+mesh = SubResource("BoxMesh_lpqai")
+
+[node name="StaticBody3D2" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, -4)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D2"]
+shape = SubResource("BoxShape3D_ml6m7")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D2"]
+mesh = SubResource("BoxMesh_fup6v")
+
+[node name="Button" parent="." instance=ExtResource("1_j1d56")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.8162746, 0.26622987, -1.2400551)
+
+[node name="CarriageHider" type="VisibleOnScreenNotifier3D" parent="." node_paths=PackedStringArray("carriage")]
+aabb = AABB(-20, -1, -20, 40, 40, 40)
+script = ExtResource("2_4lkwt")
+carriage = NodePath("..")
+
+[connection signal="screen_entered" from="CarriageHider" to="CarriageHider" method="_on_screen_entered"]
+[connection signal="screen_exited" from="CarriageHider" to="CarriageHider" method="_on_screen_exited"]

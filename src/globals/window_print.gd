@@ -1,6 +1,6 @@
 extends Node
 
-func print(...args: Array) -> void:
+func print(message: Variant = "", ...args: Array) -> void:
 	var prefix: String = "[" + get_window().title + "]: "
-	var text: String = prefix + "".join(args.map(str))
+	var text: String = prefix + str(message) + "".join(args.map(str))
 	print(text)
