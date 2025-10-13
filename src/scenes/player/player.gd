@@ -2,7 +2,7 @@
 class_name Player
 extends CharacterBody3D
 
-const SPEED: float = 14.0
+const SPEED: float = 8.0
 
 # Authority is set when updating the player id
 # so that the multiplayer synchronizer which synchronizes the player id

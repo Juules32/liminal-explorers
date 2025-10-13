@@ -1,20 +1,75 @@
-[gd_scene load_steps=7 format=3 uid="uid://cuugi5dtq6bay"]
+[gd_scene load_steps=17 format=3 uid="uid://cuugi5dtq6bay"]
 
 [ext_resource type="PackedScene" uid="uid://cujgcbnqlo8mh" path="res://assets/models/button.glb" id="1_j1d56"]
+[ext_resource type="Script" uid="uid://o4pot8cj6ov0" path="res://scenes/world/carriage.gd" id="1_ml6m7"]
 [ext_resource type="Script" uid="uid://6011vpflvynj" path="res://scenes/world/carriage_hider.gd" id="2_4lkwt"]
+[ext_resource type="Script" uid="uid://67eac28n4pu1" path="res://scenes/world/carriage_button.gd" id="2_lpqai"]
 [ext_resource type="PackedScene" uid="uid://drfkdq1tndltx" path="res://assets/models/train_carriage.gltf" id="3_j1d56"]
 [ext_resource type="PackedScene" uid="uid://dcslwgov1hoij" path="res://assets/models/train_speaker.glb" id="4_hfdrg"]
 [ext_resource type="AudioStream" uid="uid://brikhb5vv7m87" path="res://assets/sound/liminal_pad.wav" id="5_lpqai"]
 [ext_resource type="Script" uid="uid://dkb8ltjc6067n" path="res://addons/raytraced_audio/raytraced_audio_player_3d.gd" id="6_ml6m7"]
 
-[node name="Carriage" type="Node3D"]
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_lpqai"]
 
-[node name="Button" parent="." instance=ExtResource("1_j1d56")]
-transform = Transform3D(-1.3113417e-08, 0, 0.3, 0, 0.3, 0, -0.3, 0, -1.3113417e-08, -17.952621, 2.786819, 1.3838425)
+[sub_resource type="BoxShape3D" id="BoxShape3D_ml6m7"]
+size = Vector3(0.44537354, 0.627861, 0.59191895)
+
+[sub_resource type="BoxMesh" id="BoxMesh_lpqai"]
+size = Vector3(0.1, 5, 1.1)
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_tqqdk"]
+data = PackedVector3Array(-0.049999997, 2.5, 0.55, 0.049999997, 2.5, 0.55, -0.049999997, -2.5, 0.55, 0.049999997, 2.5, 0.55, 0.049999997, -2.5, 0.55, -0.049999997, -2.5, 0.55, 0.049999997, 2.5, -0.55, -0.049999997, 2.5, -0.55, 0.049999997, -2.5, -0.55, -0.049999997, 2.5, -0.55, -0.049999997, -2.5, -0.55, 0.049999997, -2.5, -0.55, 0.049999997, 2.5, 0.55, 0.049999997, 2.5, -0.55, 0.049999997, -2.5, 0.55, 0.049999997, 2.5, -0.55, 0.049999997, -2.5, -0.55, 0.049999997, -2.5, 0.55, -0.049999997, 2.5, -0.55, -0.049999997, 2.5, 0.55, -0.049999997, -2.5, -0.55, -0.049999997, 2.5, 0.55, -0.049999997, -2.5, 0.55, -0.049999997, -2.5, -0.55, 0.049999997, 2.5, 0.55, -0.049999997, 2.5, 0.55, 0.049999997, 2.5, -0.55, -0.049999997, 2.5, 0.55, -0.049999997, 2.5, -0.55, 0.049999997, 2.5, -0.55, -0.049999997, -2.5, 0.55, 0.049999997, -2.5, 0.55, -0.049999997, -2.5, -0.55, 0.049999997, -2.5, 0.55, 0.049999997, -2.5, -0.55, -0.049999997, -2.5, -0.55)
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_td30p"]
+data = PackedVector3Array(-0.049999997, 2.5, 0.55, 0.049999997, 2.5, 0.55, -0.049999997, -2.5, 0.55, 0.049999997, 2.5, 0.55, 0.049999997, -2.5, 0.55, -0.049999997, -2.5, 0.55, 0.049999997, 2.5, -0.55, -0.049999997, 2.5, -0.55, 0.049999997, -2.5, -0.55, -0.049999997, 2.5, -0.55, -0.049999997, -2.5, -0.55, 0.049999997, -2.5, -0.55, 0.049999997, 2.5, 0.55, 0.049999997, 2.5, -0.55, 0.049999997, -2.5, 0.55, 0.049999997, 2.5, -0.55, 0.049999997, -2.5, -0.55, 0.049999997, -2.5, 0.55, -0.049999997, 2.5, -0.55, -0.049999997, 2.5, 0.55, -0.049999997, -2.5, -0.55, -0.049999997, 2.5, 0.55, -0.049999997, -2.5, 0.55, -0.049999997, -2.5, -0.55, 0.049999997, 2.5, 0.55, -0.049999997, 2.5, 0.55, 0.049999997, 2.5, -0.55, -0.049999997, 2.5, 0.55, -0.049999997, 2.5, -0.55, 0.049999997, 2.5, -0.55, -0.049999997, -2.5, 0.55, 0.049999997, -2.5, 0.55, -0.049999997, -2.5, -0.55, 0.049999997, -2.5, 0.55, 0.049999997, -2.5, -0.55, -0.049999997, -2.5, -0.55)
+
+[sub_resource type="Animation" id="Animation_ml6m7"]
+length = 0.001
+tracks/0/type = "position_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Door1")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0.55)
+tracks/1/type = "position_3d"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Door2")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = PackedFloat32Array(0, 1, 0, 0, -0.55)
+
+[sub_resource type="Animation" id="Animation_lpqai"]
+resource_name = "open"
+length = 10.0
+tracks/0/type = "position_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Door1")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0.55, 10, 1, 0, 0, 2)
+tracks/1/type = "position_3d"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Door2")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = PackedFloat32Array(0, 1, 0, 0, -0.55, 10, 1, 0, 0, -2)
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_fup6v"]
+_data = {
+&"RESET": SubResource("Animation_ml6m7"),
+&"open": SubResource("Animation_lpqai")
+}
+
+[node name="Carriage" type="Node3D"]
+script = ExtResource("1_ml6m7")
 
 [node name="CarriageHider" type="VisibleOnScreenNotifier3D" parent="." node_paths=PackedStringArray("carriage")]
 visible = false
-aabb = AABB(-20, -1, -20, 40, 40, 40)
+aabb = AABB(-19, 0, -5, 38, 8, 10)
 script = ExtResource("2_4lkwt")
 carriage = NodePath("..")
 
@@ -36,6 +91,44 @@ volume_db = -15.0
 autoplay = true
 script = ExtResource("6_ml6m7")
 metadata/_custom_type_script = "uid://dkb8ltjc6067n"
+
+[node name="CarriageButton" type="StaticBody3D" parent="." groups=["interactible"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.953, 2.787, 1.384)
+physics_material_override = SubResource("PhysicsMaterial_lpqai")
+script = ExtResource("2_lpqai")
+
+[node name="CarriageButtonModel" parent="CarriageButton" instance=ExtResource("1_j1d56")]
+transform = Transform3D(-1.3113417e-08, 0, 0.3, 0, 0.3, 0, -0.3, 0, -1.3113417e-08, 0, 0, 0)
+
+[node name="CarriageButtonShape" type="CollisionShape3D" parent="CarriageButton"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.27731323, 0.32799911, 0.012756348)
+shape = SubResource("BoxShape3D_ml6m7")
+
+[node name="CarriageDoor" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.39975, 2.575801, 0)
+
+[node name="Door1" type="StaticBody3D" parent="CarriageDoor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.55)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CarriageDoor/Door1"]
+mesh = SubResource("BoxMesh_lpqai")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CarriageDoor/Door1"]
+shape = SubResource("ConcavePolygonShape3D_tqqdk")
+
+[node name="Door2" type="StaticBody3D" parent="CarriageDoor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.55)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CarriageDoor/Door2"]
+mesh = SubResource("BoxMesh_lpqai")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CarriageDoor/Door2"]
+shape = SubResource("ConcavePolygonShape3D_td30p")
+
+[node name="DoorAnimationPlayer" type="AnimationPlayer" parent="CarriageDoor"]
+libraries = {
+&"": SubResource("AnimationLibrary_fup6v")
+}
 
 [connection signal="screen_entered" from="CarriageHider" to="CarriageHider" method="_on_screen_entered"]
 [connection signal="screen_exited" from="CarriageHider" to="CarriageHider" method="_on_screen_exited"]
