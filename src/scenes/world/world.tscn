@@ -1,16 +1,15 @@
-[gd_scene load_steps=6 format=3 uid="uid://5s7e8m6rcial"]
+[gd_scene load_steps=7 format=3 uid="uid://5s7e8m6rcial"]
 
 [ext_resource type="Script" uid="uid://dnpos742jnngb" path="res://scenes/world/world.gd" id="1_f3sb7"]
 [ext_resource type="AudioStream" uid="uid://c5qpnfga41t4p" path="res://assets/music/house_in_a_forest.ogg" id="2_1fp7r"]
 [ext_resource type="Script" uid="uid://dkb8ltjc6067n" path="res://addons/raytraced_audio/raytraced_audio_player_3d.gd" id="3_6m72w"]
 [ext_resource type="PackedScene" uid="uid://cuugi5dtq6bay" path="res://scenes/world/carriage.tscn" id="4_6m72w"]
+[ext_resource type="Script" uid="uid://bewj0dmi1gtb3" path="res://scenes/world/visible_on_screen_notifier_3d.gd" id="5_v5dby"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_v5dby"]
 
-[node name="World" type="Node" node_paths=PackedStringArray("main_carriage", "second_carriage")]
+[node name="World" type="Node"]
 script = ExtResource("1_f3sb7")
-main_carriage = NodePath("MainCarriage")
-second_carriage = NodePath("SecondCarriage")
 
 [node name="PlayerSpawner" type="MultiplayerSpawner" parent="."]
 _spawnable_scenes = PackedStringArray("uid://c4qhceyy2snhx")
@@ -34,5 +33,13 @@ metadata/_custom_type_script = "uid://dkb8ltjc6067n"
 
 [node name="SecondCarriage" parent="." instance=ExtResource("4_6m72w")]
 transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 50, 0, 0)
+
+[node name="PlayerVisionCarriageTeleporter" type="VisibleOnScreenNotifier3D" parent="." node_paths=PackedStringArray("main_carriage", "second_carriage")]
+script = ExtResource("5_v5dby")
+main_carriage = NodePath("../MainCarriage")
+second_carriage = NodePath("../SecondCarriage")
+
+[connection signal="screen_entered" from="PlayerVisionCarriageTeleporter" to="PlayerVisionCarriageTeleporter" method="_on_screen_entered"]
+[connection signal="screen_exited" from="PlayerVisionCarriageTeleporter" to="PlayerVisionCarriageTeleporter" method="_on_screen_exited"]
 
 [editable path="MainCarriage"]

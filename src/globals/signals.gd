@@ -1,4 +1,7 @@
 extends Node
 
-signal start_player_carriage_teleport
-signal move_player_carriage_teleport(main_carriage: Node3D, second_carriage: Node3D)
+@warning_ignore_start("unused_signal")
+
+signal spawned_player(player: Player)
+
+@warning_ignore_restore("unused_signal")
