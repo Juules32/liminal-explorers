@@ -13,24 +13,9 @@ var _has_been_seen: bool = false
 # To prevent more than one teleportation
 var _has_moved: bool = false
 
-# Player to move (the player with id == 1 on the server)
-var _server_player: Player
-
-# The player not controlled
-var _other_player: Player
-
 
 func _ready() -> void:
-	Signals.spawned_player.connect(_on_spawned_player)
 	Signals.enable_carriage_teleport.connect(_on_enable_carriage_teleport)
-
-
-# Update player references when a new player is instantiated
-func _on_spawned_player(player: Player) -> void:
-	if len(multiplayer.get_peers()) and player.id == multiplayer.get_peers().get(0):
-		_other_player = player
-	if multiplayer.is_server() and player.id == 1:
-		_server_player = player
 
 
 func _on_enable_carriage_teleport() -> void:
@@ -39,8 +24,8 @@ func _on_enable_carriage_teleport() -> void:
 
 # Constantly update position to match other player position
 func _physics_process(_delta: float) -> void:
-	if _other_player:
-		global_position = _other_player.global_position
+	if world.other_player:
+		global_position = world.other_player.global_position
 
 
 func _on_screen_entered() -> void:
@@ -75,14 +60,14 @@ func _move_server_player() -> void:
 		W.print("Not all players not looking")
 		return
 	
-	if not _server_player:
+	if not world.server_player:
 		W.print("No server player set")
 		return
 	
-	var main_carriage_position: Vector3 = world.main_carriage.to_local(_server_player.global_position)
-	_server_player.global_position = world.second_carriage.to_global(main_carriage_position)
-	_server_player.input_synchronizer.rotation.y += deg_to_rad(180.0)
-	_server_player.rotation.y -= deg_to_rad(180.0)
+	var main_carriage_position: Vector3 = world.main_carriage.to_local(world.server_player.global_position)
+	world.server_player.global_position = world.second_carriage.to_global(main_carriage_position)
+	world.server_player.input_synchronizer.rotation.y += deg_to_rad(180.0)
+	world.server_player.rotation.y -= deg_to_rad(180.0)
 	W.print("Moved and rotated server player")
 	
 	var train_voices_position: Vector3 = world.main_carriage.to_local(train_voices.global_position)

@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://cpvrqn7dyesuy"]
+
+[ext_resource type="Script" uid="uid://lsoi1wyrdv5m" path="res://scenes/world/player_ear.gd" id="1_rteps"]
+[ext_resource type="Script" uid="uid://bjpmu5sklv5h8" path="res://addons/raytraced_audio/raytraced_audio_listener.gd" id="2_aqa1i"]
+
+[node name="PlayerEar" type="Node3D"]
+script = ExtResource("1_rteps")
+
+[node name="RaytracedAudioListener" type="AudioListener3D" parent="."]
+script = ExtResource("2_aqa1i")
+metadata/_custom_type_script = "uid://bjpmu5sklv5h8"

@@ -2,7 +2,9 @@
 class_name Player
 extends CharacterBody3D
 
-const SPEED: float = 8.0
+const MOVEMENT_SPEED: float = 8.0
+const EAR_HEIGHT: float = 1.174
+const PLAYER_EAR: Resource = preload("uid://cpvrqn7dyesuy")
 
 # Authority is set when updating the player id
 # so that the multiplayer synchronizer which synchronizes the player id
@@ -12,10 +14,9 @@ const SPEED: float = 8.0
 		id = new_id
 		$AuthorityNode.set_multiplayer_authority(new_id)
 
-@onready var label: Label3D = $Label
+@onready var debug_label: Label3D = $DebugLabel
 @onready var input_synchronizer: InputSynchronizer = $AuthorityNode/InputSynchronizer
 @onready var camera: Camera3D = $CameraPivot/Camera
-@onready var raytraced_audio_listener: RaytracedAudioListener = $RaytracedAudioListener
 @onready var authority_node: Node3D = $AuthorityNode
 @onready var player_models: Node3D = $PlayerModels
 @onready var alice_model: Node3D = $PlayerModels/AliceModel
@@ -32,11 +33,12 @@ func _ready() -> void:
 	
 	if authority_node.is_multiplayer_authority():
 		camera.make_current()
-		raytraced_audio_listener.make_current()
+		var player_ear_instance: PlayerEar = PLAYER_EAR.instantiate()
+		add_child(player_ear_instance)
+		player_ear_instance.raytraced_audio_listener.make_current()
+		player_ear_instance.position.y = EAR_HEIGHT
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-	else:
-		# Remove listeners on players not controlled by this device
-		raytraced_audio_listener.queue_free()
+	
 	if not multiplayer.is_server():
 		set_physics_process(false)
 	
@@ -50,11 +52,11 @@ func _physics_process(delta: float) -> void:
 	var direction: Vector3 = (global_transform.basis * input_dir).normalized()
 
 	# Apply speed
-	velocity = direction * SPEED
+	velocity = direction * MOVEMENT_SPEED
 
 	# Apply rotation from synchronizer
 	rotation.y = input_synchronizer.rotation.y
 	camera.rotation.x = input_synchronizer.rotation.x
 
 	move_and_collide(velocity * delta)
-	label.text = str(velocity) + "\n" + str(id) + "\n" + str(global_position)
+	debug_label.text = str(velocity) + "\n" + str(id) + "\n" + str(global_position)
