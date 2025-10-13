@@ -1,10 +1,11 @@
 extends VisibleOnScreenNotifier3D
 
-@export var main_carriage: Node3D
-@export var second_carriage: Node3D
+@export var world: World
 @export var train_voices: Node3D
 
-var _is_in_view: bool = false
+var _enabled: bool = false
+
+var _is_in_view: bool = true
 
 # To prevent immediate teleportation
 var _has_been_seen: bool = false
@@ -21,6 +22,8 @@ var _other_player: Player
 
 func _ready() -> void:
 	Signals.spawned_player.connect(_on_spawned_player)
+	Signals.enable_carriage_teleport.connect(_on_enable_carriage_teleport)
+
 
 # Update player references when a new player is instantiated
 func _on_spawned_player(player: Player) -> void:
@@ -29,6 +32,11 @@ func _on_spawned_player(player: Player) -> void:
 	if multiplayer.is_server() and player.id == 1:
 		_server_player = player
 
+
+func _on_enable_carriage_teleport() -> void:
+	_enabled = true
+
+
 # Constantly update position to match other player position
 func _physics_process(_delta: float) -> void:
 	if _other_player:
@@ -36,12 +44,18 @@ func _physics_process(_delta: float) -> void:
 
 
 func _on_screen_entered() -> void:
+	if not _enabled:
+		return
+	
 	W.print("Other player entered screen")
 	_is_in_view = true
 	_has_been_seen = true
 
 
 func _on_screen_exited() -> void:
+	if not _enabled:
+		return
+	
 	W.print("Other player exited screen")
 	_is_in_view = false
 	
@@ -65,12 +79,18 @@ func _move_server_player() -> void:
 		W.print("No server player set")
 		return
 	
-	var main_carriage_position: Vector3 = main_carriage.to_local(_server_player.global_position)
-	_server_player.global_position = second_carriage.to_global(main_carriage_position)
+	var main_carriage_position: Vector3 = world.main_carriage.to_local(_server_player.global_position)
+	_server_player.global_position = world.second_carriage.to_global(main_carriage_position)
 	_server_player.input_synchronizer.rotation.y += deg_to_rad(180.0)
 	_server_player.rotation.y -= deg_to_rad(180.0)
 	W.print("Moved and rotated server player")
 	
-	var train_voices_position: Vector3 = main_carriage.to_local(train_voices.global_position)
-	train_voices.global_position = second_carriage.to_global(train_voices_position)
+	var train_voices_position: Vector3 = world.main_carriage.to_local(train_voices.global_position)
+	train_voices.global_position = world.second_carriage.to_global(train_voices_position)
 	W.print("Moved and rotated train voices")
+	_post_teleport.rpc()
+
+@rpc("any_peer", "call_local", "reliable")
+func _post_teleport() -> void:
+	_has_moved = true
+	Signals.start_second_animation.emit()

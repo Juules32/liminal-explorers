@@ -1,10 +1,12 @@
-[gd_scene load_steps=9 format=3 uid="uid://5s7e8m6rcial"]
+[gd_scene load_steps=17 format=3 uid="uid://5s7e8m6rcial"]
 
 [ext_resource type="Script" uid="uid://dnpos742jnngb" path="res://scenes/world/world.gd" id="1_f3sb7"]
 [ext_resource type="Script" uid="uid://dkb8ltjc6067n" path="res://addons/raytraced_audio/raytraced_audio_player_3d.gd" id="3_6m72w"]
 [ext_resource type="PackedScene" uid="uid://cuugi5dtq6bay" path="res://scenes/world/carriage.tscn" id="4_6m72w"]
 [ext_resource type="Script" uid="uid://bewj0dmi1gtb3" path="res://scenes/world/visible_on_screen_notifier_3d.gd" id="5_v5dby"]
 [ext_resource type="AudioStream" uid="uid://70mru6l38kv6" path="res://assets/sound/train_engine.wav" id="7_bq33v"]
+[ext_resource type="Script" uid="uid://lub0os1ts28q" path="res://scenes/world/animation_player.gd" id="7_j2gmx"]
+[ext_resource type="Script" uid="uid://bp1uh8ls4wuun" path="res://scenes/world/hide_train_trigger_area.gd" id="8_1yooq"]
 [ext_resource type="AudioStream" uid="uid://u52ud2udy01k" path="res://assets/sound/train_voices.wav" id="8_j2gmx"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_v5dby"]
@@ -14,8 +16,180 @@ transparency = 1
 material = SubResource("StandardMaterial3D_v5dby")
 size = Vector3(2, 0.7, 2)
 
-[node name="World" type="Node"]
+[sub_resource type="Animation" id="Animation_gb53w"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TrainEngine:volume_db")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [-10.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("TrainVoices:volume_db")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [-17.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("MainCarriage/TrainSpeakerModel/LiminalPad:volume_db")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [-15.0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("SecondCarriage/TrainSpeakerModel/LiminalPad:volume_db")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [-15.0]
+}
+
+[sub_resource type="Animation" id="Animation_bq33v"]
+resource_name = "first"
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimationPlayer")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"enable_carriage_teleport"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_j2gmx"]
+resource_name = "second"
+length = 50.0
+step = 1.0
+tracks/0/type = "animation"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MainCarriage/CarriageDoor/DoorAnimationPlayer")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"clips": PackedStringArray("open"),
+"times": PackedFloat32Array(30)
+}
+tracks/1/type = "animation"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("SecondCarriage/CarriageDoor/DoorAnimationPlayer")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"clips": PackedStringArray("open"),
+"times": PackedFloat32Array(30)
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("TrainEngine:volume_db")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 30),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [-10.0, -80.0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("TrainVoices:volume_db")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 30),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [-17.0, -80.0]
+}
+
+[sub_resource type="Animation" id="Animation_1yooq"]
+resource_name = "third"
+length = 10.0
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimationPlayer")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"enable_hide_carriage"
+}]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("MainCarriage/TrainSpeakerModel/LiminalPad:volume_db")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 10),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [-15.0, -80.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("SecondCarriage/TrainSpeakerModel/LiminalPad:volume_db")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 10),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [-15.0, -80.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_j2gmx"]
+_data = {
+&"RESET": SubResource("Animation_gb53w"),
+&"first": SubResource("Animation_bq33v"),
+&"second": SubResource("Animation_j2gmx"),
+&"third": SubResource("Animation_1yooq")
+}
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_gb53w"]
+size = Vector3(12, 5, 10)
+
+[node name="World" type="Node" node_paths=PackedStringArray("main_carriage", "second_carriage")]
 script = ExtResource("1_f3sb7")
+main_carriage = NodePath("MainCarriage")
+second_carriage = NodePath("SecondCarriage")
 
 [node name="PlayerSpawner" type="MultiplayerSpawner" parent="."]
 _spawnable_scenes = PackedStringArray("uid://c4qhceyy2snhx")
@@ -27,12 +201,11 @@ spawn_limit = 2
 [node name="SecondCarriage" parent="." instance=ExtResource("4_6m72w")]
 transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 50, 0, 0)
 
-[node name="PlayerVisionCarriageTeleporter" type="VisibleOnScreenNotifier3D" parent="." node_paths=PackedStringArray("main_carriage", "second_carriage", "train_voices")]
+[node name="PlayerVisionCarriageTeleporter" type="VisibleOnScreenNotifier3D" parent="." node_paths=PackedStringArray("world", "train_voices")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
 aabb = AABB(-1, 0, -1, 2, 0.7, 2)
 script = ExtResource("5_v5dby")
-main_carriage = NodePath("../MainCarriage")
-second_carriage = NodePath("../SecondCarriage")
+world = NodePath("..")
 train_voices = NodePath("../TrainVoices")
 
 [node name="DebugMesh" type="MeshInstance3D" parent="PlayerVisionCarriageTeleporter"]
@@ -40,7 +213,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.35, 0)
 visible = false
 mesh = SubResource("BoxMesh_v5dby")
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+[node name="TrainEngine" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("7_bq33v")
 volume_db = -10.0
 pitch_scale = 0.9
@@ -54,5 +227,24 @@ autoplay = true
 script = ExtResource("3_6m72w")
 metadata/_custom_type_script = "uid://dkb8ltjc6067n"
 
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." node_paths=PackedStringArray("world")]
+libraries = {
+&"": SubResource("AnimationLibrary_j2gmx")
+}
+script = ExtResource("7_j2gmx")
+world = NodePath("..")
+
+[node name="HideTrainTriggerArea" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25, 2.642, 0)
+script = ExtResource("8_1yooq")
+metadata/_edit_group_ = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HideTrainTriggerArea"]
+shape = SubResource("BoxShape3D_gb53w")
+
 [connection signal="screen_entered" from="PlayerVisionCarriageTeleporter" to="PlayerVisionCarriageTeleporter" method="_on_screen_entered"]
 [connection signal="screen_exited" from="PlayerVisionCarriageTeleporter" to="PlayerVisionCarriageTeleporter" method="_on_screen_exited"]
+[connection signal="body_entered" from="HideTrainTriggerArea" to="HideTrainTriggerArea" method="_on_body_entered"]
+
+[editable path="MainCarriage"]
+[editable path="SecondCarriage"]

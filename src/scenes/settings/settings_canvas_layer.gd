@@ -14,7 +14,7 @@ func _ready() -> void:
 
 
 func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("settings"):
+	if get_window().has_focus() and event.is_action_pressed("settings"):
 		if not is_tweening:
 			visible = true
 			is_tweening = true
