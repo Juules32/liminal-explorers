@@ -8,14 +8,33 @@ const STEAM_LOBBY_ENTRY: Resource = preload("uid://bpombmlv0o6ts")
 @onready var lobby_name_line_edit: LineEdit = $TabContainer/Steam/MarginContainer/VBoxContainer/HBoxContainer/LobbyNameLineEdit
 @onready var steam_running_label: RichTextLabel = $TabContainer/Steam/MarginContainer/VBoxContainer/HBoxContainer/SteamRunningLabel
 @onready var connection_string_line_edit: LineEdit = $TabContainer/Iroh/MarginContainer/VBoxContainer/HBoxContainer/ConnectionStringLineEdit
+@onready var address_line_edit: LineEdit = $TabContainer/Local/MarginContainer/VBoxContainer/HBoxContainer/AddressLineEdit
 
 
 func _ready() -> void:
 	Steam.lobby_match_list.connect(_on_lobby_match_list)
+	if LaunchArgumentParser.auto_host_local:
+		LaunchArgumentParser.auto_host_local = false
+		_on_e_net_host_button_pressed()
+	elif LaunchArgumentParser.auto_join_local:
+		LaunchArgumentParser.auto_join_local = false
+		_on_e_net_join_button_pressed()
+
+
+func _on_e_net_host_button_pressed() -> void:
+	NetworkManager.create_lobby()
+	hide()
+
+
+func _on_e_net_join_button_pressed() -> void:
+	NetworkManager.join_lobby(address_line_edit.text)
+	hide()
+
 
 func _on_steam_host_button_pressed() -> void:
 	NetworkManager.create_lobby(lobby_name_line_edit.text)
 	hide()
+
 
 func _on_lobby_match_list(lobby_ids: Variant) -> void:
 	for lobby_child: Node in lobbies_container.get_children():
@@ -38,13 +57,6 @@ func _on_lobby_match_list(lobby_ids: Variant) -> void:
 		)
 		lobbies_container.add_child(steam_lobby_entry)
 
-func _on_e_net_host_button_pressed() -> void:
-	NetworkManager.create_lobby()
-	hide()
-
-func _on_e_net_join_button_pressed() -> void:
-	NetworkManager.join_lobby()
-	hide()
 
 func _on_tab_container_tab_changed(tab: int) -> void:
 	var new_network_type: NetworkManager.NetworkType = tab as NetworkManager.NetworkType
@@ -53,15 +65,18 @@ func _on_tab_container_tab_changed(tab: int) -> void:
 		if steam_running_label:
 			steam_running_label.hide()
 	NetworkManager.build_multiplayer_network()
-	print("Switched to: ", NetworkManager.active_network_type)
+	W.print("Switched to: ", NetworkManager.active_network_type)
+
 
 func _on_check_steam_running_timer_timeout() -> void:
 	var error: Error = NetworkManager.open_lobby_list()
 	steam_running_label.visible = error == ERR_CANT_CONNECT
 
+
 func _on_iroh_host_button_pressed() -> void:
 	NetworkManager.create_lobby()
 	hide()
+
 
 func _on_iroh_join_button_pressed() -> void:
 	NetworkManager.join_lobby(connection_string_line_edit.text)

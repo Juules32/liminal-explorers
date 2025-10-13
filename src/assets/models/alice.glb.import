@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://d0ypm0v45pwdv"
-path="res://.godot/imported/player.glb-08dcfb373480a049995065542e37637b.scn"
+path="res://.godot/imported/alice.glb-8ef9960a2a20e2724be4abf76ea7ab91.scn"
 
 [deps]
 
-source_file="res://art/player.glb"
-dest_files=["res://.godot/imported/player.glb-08dcfb373480a049995065542e37637b.scn"]
+source_file="res://assets/models/alice.glb"
+dest_files=["res://.godot/imported/alice.glb-8ef9960a2a20e2724be4abf76ea7ab91.scn"]
 
 [params]
 

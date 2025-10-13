@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://ccwv7spcesi2x"]
+[gd_scene load_steps=5 format=3 uid="uid://ccwv7spcesi2x"]
 
 [ext_resource type="PackedScene" uid="uid://5s7e8m6rcial" path="res://scenes/world/world.tscn" id="1_80nbo"]
 [ext_resource type="Script" uid="uid://d0h45p2436a3v" path="res://scenes/game/game.gd" id="1_e2o6t"]
 [ext_resource type="PackedScene" uid="uid://b7atj40344vbi" path="res://scenes/lobby_container/lobby_container.tscn" id="2_feb5d"]
+[ext_resource type="PackedScene" uid="uid://b1ql3sxe3b0pb" path="res://scenes/settings/settings_canvas_layer.tscn" id="4_kelw5"]
 
 [node name="Game" type="Node"]
 script = ExtResource("1_e2o6t")
@@ -10,3 +11,5 @@ script = ExtResource("1_e2o6t")
 [node name="World" parent="." instance=ExtResource("1_80nbo")]
 
 [node name="LobbyContainer" parent="." instance=ExtResource("2_feb5d")]
+
+[node name="SettingsCanvasLayer" parent="." instance=ExtResource("4_kelw5")]

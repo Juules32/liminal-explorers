@@ -1,22 +1,18 @@
 [gd_scene load_steps=9 format=3 uid="uid://5s7e8m6rcial"]
 
 [ext_resource type="Script" uid="uid://dnpos742jnngb" path="res://scenes/world/world.gd" id="1_f3sb7"]
-[ext_resource type="AudioStream" uid="uid://c5qpnfga41t4p" path="res://art/House In a Forest Loop.ogg" id="2_1fp7r"]
 [ext_resource type="Script" uid="uid://dkb8ltjc6067n" path="res://addons/raytraced_audio/raytraced_audio_player_3d.gd" id="3_6m72w"]
+[ext_resource type="PackedScene" uid="uid://cuugi5dtq6bay" path="res://scenes/world/carriage.tscn" id="4_6m72w"]
+[ext_resource type="Script" uid="uid://bewj0dmi1gtb3" path="res://scenes/world/visible_on_screen_notifier_3d.gd" id="5_v5dby"]
+[ext_resource type="AudioStream" uid="uid://70mru6l38kv6" path="res://assets/sound/train_engine.wav" id="7_bq33v"]
+[ext_resource type="AudioStream" uid="uid://u52ud2udy01k" path="res://assets/sound/train_voices.wav" id="8_j2gmx"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_1fp7r"]
-size = Vector3(40, 2, 40)
-
-[sub_resource type="BoxMesh" id="BoxMesh_sl2e5"]
-size = Vector3(40, 2, 40)
-
-[sub_resource type="SphereMesh" id="SphereMesh_v5dby"]
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_6m72w"]
-size = Vector3(20, 20, 2)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_v5dby"]
+transparency = 1
 
 [sub_resource type="BoxMesh" id="BoxMesh_v5dby"]
-size = Vector3(20, 20, 2)
+material = SubResource("StandardMaterial3D_v5dby")
+size = Vector3(2, 0.7, 2)
 
 [node name="World" type="Node"]
 script = ExtResource("1_f3sb7")
@@ -24,54 +20,39 @@ script = ExtResource("1_f3sb7")
 [node name="PlayerSpawner" type="MultiplayerSpawner" parent="."]
 _spawnable_scenes = PackedStringArray("uid://c4qhceyy2snhx")
 spawn_path = NodePath("..")
-spawn_limit = 10
+spawn_limit = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="MainCarriage" parent="." instance=ExtResource("4_6m72w")]
 
-[node name="LeaveButton" type="Button" parent="HBoxContainer"]
-layout_mode = 2
-text = "Leave"
+[node name="SecondCarriage" parent="." instance=ExtResource("4_6m72w")]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 50, 0, 0)
 
-[node name="CopyConnectionStringButton" type="Button" parent="HBoxContainer"]
-layout_mode = 2
-text = "Copy Connection String"
+[node name="PlayerVisionCarriageTeleporter" type="VisibleOnScreenNotifier3D" parent="." node_paths=PackedStringArray("main_carriage", "second_carriage", "train_voices")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
+aabb = AABB(-1, 0, -1, 2, 0.7, 2)
+script = ExtResource("5_v5dby")
+main_carriage = NodePath("../MainCarriage")
+second_carriage = NodePath("../SecondCarriage")
+train_voices = NodePath("../TrainVoices")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+[node name="DebugMesh" type="MeshInstance3D" parent="PlayerVisionCarriageTeleporter"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.35, 0)
+visible = false
+mesh = SubResource("BoxMesh_v5dby")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
-shape = SubResource("BoxShape3D_1fp7r")
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_bq33v")
+volume_db = -10.0
+pitch_scale = 0.9
+autoplay = true
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
-mesh = SubResource("BoxMesh_sl2e5")
-
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 29, 0)
-shadow_enabled = true
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6827354, -8.356096)
-mesh = SubResource("SphereMesh_v5dby")
-skeleton = NodePath("")
-
-[node name="RaytracedAudioPlayer3D" type="AudioStreamPlayer3D" parent="MeshInstance3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.058775, 0)
-stream = ExtResource("2_1fp7r")
-volume_db = -24.698
+[node name="TrainVoices" type="AudioStreamPlayer3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.426125, 5.4379587, 0)
+stream = ExtResource("8_j2gmx")
+volume_db = -17.0
 autoplay = true
 script = ExtResource("3_6m72w")
 metadata/_custom_type_script = "uid://dkb8ltjc6067n"
 
-[node name="StaticBody3D2" type="StaticBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, -4)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D2"]
-shape = SubResource("BoxShape3D_6m72w")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D2"]
-mesh = SubResource("BoxMesh_v5dby")
-
-[connection signal="pressed" from="HBoxContainer/LeaveButton" to="." method="_on_leave_button_pressed"]
-[connection signal="pressed" from="HBoxContainer/CopyConnectionStringButton" to="." method="_on_copy_connection_string_button_pressed"]
+[connection signal="screen_entered" from="PlayerVisionCarriageTeleporter" to="PlayerVisionCarriageTeleporter" method="_on_screen_entered"]
+[connection signal="screen_exited" from="PlayerVisionCarriageTeleporter" to="PlayerVisionCarriageTeleporter" method="_on_screen_exited"]
