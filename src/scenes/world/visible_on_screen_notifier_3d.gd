@@ -2,6 +2,7 @@ extends VisibleOnScreenNotifier3D
 
 @export var main_carriage: Node3D
 @export var second_carriage: Node3D
+@export var train_voices: Node3D
 
 var _is_in_view: bool = false
 
@@ -23,7 +24,7 @@ func _ready() -> void:
 
 # Update player references when a new player is instantiated
 func _on_spawned_player(player: Player) -> void:
-	if player.id == multiplayer.get_peers().get(0):
+	if len(multiplayer.get_peers()) and player.id == multiplayer.get_peers().get(0):
 		_other_player = player
 	if multiplayer.is_server() and player.id == 1:
 		_server_player = player
@@ -66,6 +67,10 @@ func _move_server_player() -> void:
 	
 	var main_carriage_position: Vector3 = main_carriage.to_local(_server_player.global_position)
 	_server_player.global_position = second_carriage.to_global(main_carriage_position)
-	_server_player.input_synchronizer.rotation.y -= deg_to_rad(180.0)
+	_server_player.input_synchronizer.rotation.y += deg_to_rad(180.0)
 	_server_player.rotation.y -= deg_to_rad(180.0)
 	W.print("Moved and rotated server player")
+	
+	var train_voices_position: Vector3 = main_carriage.to_local(train_voices.global_position)
+	train_voices.global_position = second_carriage.to_global(train_voices_position)
+	W.print("Moved and rotated train voices")

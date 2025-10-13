@@ -1,8 +1,8 @@
 extends Node
 
-
 enum NetworkType { ENET, STEAM, IROH }
 
+const SPAWN_METERS_APART: float = 4.0
 const PLAYER: Resource = preload("uid://c4qhceyy2snhx")
 const ENET_NETWORK: Resource = preload("uid://d1xy2osd1n2jp")
 const STEAM_NETWORK: Resource = preload("uid://cvofp4wy4vl4t")
@@ -73,7 +73,7 @@ func connect_peer_to_lobby(peer_id: int) -> void:
 		var player_instance: Player = PLAYER.instantiate()
 		player_instance.id = peer_id
 		player_instance.name = str(peer_id)
-		player_instance.position = Vector3(len(multiplayer.get_peers()) * 2, 0, 0)
+		player_instance.position.x = len(multiplayer.get_peers()) * SPAWN_METERS_APART
 		var world: World = get_node("/root/Game/World")
 		world.add_child(player_instance)
 

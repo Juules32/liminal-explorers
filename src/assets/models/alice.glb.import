@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://bicorb7we351t"
-path="res://.godot/imported/mob.glb-43157374ee03ddff9cce845103313e36.scn"
+uid="uid://d0ypm0v45pwdv"
+path="res://.godot/imported/alice.glb-8ef9960a2a20e2724be4abf76ea7ab91.scn"
 
 [deps]
 
-source_file="res://assets/models/mob.glb"
-dest_files=["res://.godot/imported/mob.glb-43157374ee03ddff9cce845103313e36.scn"]
+source_file="res://assets/models/alice.glb"
+dest_files=["res://.godot/imported/alice.glb-8ef9960a2a20e2724be4abf76ea7ab91.scn"]
 
 [params]
 

@@ -22,7 +22,8 @@ func _ready() -> void:
 	if "--join-local" in args:
 		auto_join_local = true
 		get_window().title = "Client"
-
+	if "--mute" in args:
+		AudioServer.set_bus_volume_db(0, -72.0)
 
 func _position_window_left() -> void:
 	DisplayServer.window_set_position(_primary_screen_position)

@@ -13,4 +13,4 @@ func _on_screen_entered() -> void:
 func _on_screen_exited() -> void:
 	W.print("Carriage exited screen")
 	if _has_been_seen:
-		carriage.queue_free()
+		carriage.hide()

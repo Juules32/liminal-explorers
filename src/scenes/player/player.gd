@@ -17,8 +17,19 @@ const SPEED: float = 14.0
 @onready var camera: Camera3D = $CameraPivot/Camera
 @onready var raytraced_audio_listener: RaytracedAudioListener = $RaytracedAudioListener
 @onready var authority_node: Node3D = $AuthorityNode
+@onready var player_models: Node3D = $PlayerModels
+@onready var alice_model: Node3D = $PlayerModels/AliceModel
+@onready var bob_model: Node3D = $PlayerModels/BobModel
+
 
 func _ready() -> void:
+	if id == 1:
+		alice_model.show()
+		bob_model.hide()
+	else:
+		alice_model.hide()
+		bob_model.show()
+	
 	if authority_node.is_multiplayer_authority():
 		camera.make_current()
 		raytraced_audio_listener.make_current()
@@ -28,7 +39,7 @@ func _ready() -> void:
 		raytraced_audio_listener.queue_free()
 	if not multiplayer.is_server():
 		set_physics_process(false)
-
+	
 	Signals.spawned_player.emit(self)
 
 

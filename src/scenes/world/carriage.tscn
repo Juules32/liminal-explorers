@@ -1,13 +1,16 @@
-[gd_scene load_steps=4 format=3 uid="uid://cuugi5dtq6bay"]
+[gd_scene load_steps=7 format=3 uid="uid://cuugi5dtq6bay"]
 
 [ext_resource type="PackedScene" uid="uid://cujgcbnqlo8mh" path="res://assets/models/button.glb" id="1_j1d56"]
 [ext_resource type="Script" uid="uid://6011vpflvynj" path="res://scenes/world/carriage_hider.gd" id="2_4lkwt"]
-[ext_resource type="PackedScene" uid="uid://3q2v2y3e24oy" path="res://assets/models/train_wagon.gltf" id="3_j1d56"]
+[ext_resource type="PackedScene" uid="uid://drfkdq1tndltx" path="res://assets/models/train_carriage.gltf" id="3_j1d56"]
+[ext_resource type="PackedScene" uid="uid://dcslwgov1hoij" path="res://assets/models/train_speaker.glb" id="4_hfdrg"]
+[ext_resource type="AudioStream" uid="uid://brikhb5vv7m87" path="res://assets/sound/liminal_pad.wav" id="5_lpqai"]
+[ext_resource type="Script" uid="uid://dkb8ltjc6067n" path="res://addons/raytraced_audio/raytraced_audio_player_3d.gd" id="6_ml6m7"]
 
 [node name="Carriage" type="Node3D"]
 
 [node name="Button" parent="." instance=ExtResource("1_j1d56")]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -16.856783, 1.615745, -0.57643473)
+transform = Transform3D(-1.3113417e-08, 0, 0.3, 0, 0.3, 0, -0.3, 0, -1.3113417e-08, -17.952621, 2.786819, 1.3838425)
 
 [node name="CarriageHider" type="VisibleOnScreenNotifier3D" parent="." node_paths=PackedStringArray("carriage")]
 visible = false
@@ -15,12 +18,24 @@ aabb = AABB(-20, -1, -20, 40, 40, 40)
 script = ExtResource("2_4lkwt")
 carriage = NodePath("..")
 
-[node name="TrainWagon" parent="." instance=ExtResource("3_j1d56")]
-
 [node name="OmniLight3D" type="OmniLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.9476647, 0)
 omni_range = 31.395397
 omni_attenuation = 0.0
+
+[node name="TrainCarriage" parent="." instance=ExtResource("3_j1d56")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.3, 0)
+
+[node name="TrainSpeakerModel" parent="." instance=ExtResource("4_hfdrg")]
+transform = Transform3D(-4.698463, 1.7101007, -4.371139e-07, 1.7101007, 4.698463, 0, 4.1075268e-07, -1.4950174e-07, -5, -17.14209, 5.17716, 0)
+
+[node name="LiminalPad" type="AudioStreamPlayer3D" parent="TrainSpeakerModel"]
+transform = Transform3D(0.2, -7.4505815e-09, -1.7763568e-15, 7.45058e-09, 0.2, -4.440892e-16, 1.7763568e-15, 8.881784e-16, 0.19999999, -0.1350205, 0.00939101, -1.137272e-08)
+stream = ExtResource("5_lpqai")
+volume_db = -15.0
+autoplay = true
+script = ExtResource("6_ml6m7")
+metadata/_custom_type_script = "uid://dkb8ltjc6067n"
 
 [connection signal="screen_entered" from="CarriageHider" to="CarriageHider" method="_on_screen_entered"]
 [connection signal="screen_exited" from="CarriageHider" to="CarriageHider" method="_on_screen_exited"]
